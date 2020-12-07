@@ -8,7 +8,7 @@ class IHeap {
   public:
     virtual ~IHeap() {}
 
-    virtual void insert(T) = 0;
+    virtual void insert(const T&) = 0;
     virtual T delete_min() = 0;
     virtual std::vector<T> delete_k(int k) = 0;
 
