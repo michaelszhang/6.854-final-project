@@ -1,7 +1,7 @@
 #include <iostream>
-#include "binary_heap.h"
-#include "item.h"
-#include "tests.h"
+#include "src/binary_heap.h"
+#include "src/item.h"
+#include "src/tests.h"
 
 int main() {
   run_test<BinaryHeap<Item>>();

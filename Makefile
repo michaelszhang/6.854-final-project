@@ -1,21 +1,22 @@
-all: main clean
+SRCS_DIR := ./src
+BUILD_DIR := ./build
 
-binary_heap.o: binary_heap.cc
-	g++ -Wall -Wextra -std=c++14 -O2 -Wshadow -c -o binary_heap.o binary_heap.cc
+SRCS := $(wildcard $(SRCS_DIR)/*.cc)
+OBJS := $(subst $(SRCS_DIR),$(BUILD_DIR),$(SRCS))
+OBJS := $(OBJS:.cc=.o)
 
-item.o: item.cc
-	g++ -Wall -Wextra -std=c++14 -O2 -Wshadow -c -o item.o item.cc
+all: clean main
 
-main.o: main.cc
-	g++ -Wall -Wextra -std=c++14 -O2 -Wshadow -c -o main.o main.cc
+main: main.cc $(OBJS)
+	$(CXX) -Wall -Wextra -std=c++14 -O2 -Wshadow -o main main.cc $(OBJS)
 
-tests.o: tests.cc
-	g++ -Wall -Wextra -std=c++14 -O2 -Wshadow -c -o tests.o tests.cc
+build:
+	mkdir -p build
 
-main: main.o binary_heap.o item.o tests.o
-	g++ -o main main.o binary_heap.o item.o tests.o
+$(BUILD_DIR)/%.o: $(SRCS_DIR)/%.cc build
+	$(CXX) -Wall -Wextra -std=c++14 -O2 -Wshadow -c -o $@ $<
 
 clean:
-	rm -rf *.o
+	rm -rf $(BUILD_DIR) main
 
 .PHONY: all clean
