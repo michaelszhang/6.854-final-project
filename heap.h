@@ -17,6 +17,7 @@ class IHeap {
     virtual ~IHeap() {}
 
     virtual const INode<T>* insert(const T&) = 0;
+    virtual void decrease_key(const INode<T>* n) = 0;
     virtual T delete_min() = 0;
     virtual std::vector<T> delete_k(unsigned k) = 0;
 
