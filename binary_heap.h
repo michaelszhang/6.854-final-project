@@ -9,6 +9,7 @@ class BinaryHeap : virtual public IHeap<T> {
     BinaryHeap();
 
     const INode<T>* insert(const T&) override;
+    void decrease_key(const INode<T>* node) override;
     T delete_min() override;
     std::vector<T> delete_k(unsigned k) override;
 
@@ -17,15 +18,15 @@ class BinaryHeap : virtual public IHeap<T> {
   private:
     class BinaryHeapNode : public INode<T> {
       public:
-        BinaryHeapNode *left, *right;
+        BinaryHeapNode *left, *right, *parent;
         int size;
 
-        BinaryHeapNode(const T& value)
-          : INode<T>(value), left(nullptr), right(nullptr), size(1)
+        BinaryHeapNode(const T& value, BinaryHeapNode* parent)
+          : INode<T>(value), left(nullptr), right(nullptr), parent(parent), size(1)
         {}
     };
 
-    const INode<T>* insert(BinaryHeapNode*& base, const T& item);
+    const BinaryHeapNode* insert(BinaryHeapNode*& base, BinaryHeapNode* parent, const T& item);
     unsigned size(const BinaryHeapNode*) const;
 
     BinaryHeapNode* root;

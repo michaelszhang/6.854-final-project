@@ -1,7 +1,7 @@
 #ifndef _ITEM_H
 #define _ITEM_H
 
-#include <numeric>
+#include <limits>
 
 class Item {
   public:
