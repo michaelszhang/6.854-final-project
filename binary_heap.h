@@ -8,19 +8,27 @@ class BinaryHeap : virtual public IHeap<T> {
   public:
     BinaryHeap();
 
-    void insert(const T&) override;
+    const INode<T>* insert(const T&) override;
     T delete_min() override;
-    std::vector<T> delete_k() override;
+    std::vector<T> delete_k(unsigned k) override;
 
     unsigned size() const override;
 
   private:
-    struct Node {
-      Node *left, *right;
-      T value;
+    class BinaryHeapNode : public INode<T> {
+      public:
+        BinaryHeapNode *left, *right;
+        int size;
+
+        BinaryHeapNode(const T& value)
+          : INode<T>(value), left(nullptr), right(nullptr), size(1)
+        {}
     };
 
-    Node* root;
+    const INode<T>* insert(BinaryHeapNode*& base, const T& item);
+    unsigned size(const BinaryHeapNode*) const;
+
+    BinaryHeapNode* root;
 };
 
 #endif  // _BINARY_HEAP_H

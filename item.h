@@ -1,30 +1,20 @@
 #ifndef _ITEM_H
 #define _ITEM_H
 
+#include <numeric>
+
 class Item {
   public:
-    Item(int value)
-      : value(value)
-    {}
+    Item(int value=std::numeric_limits<int>::max());
 
-    int getValue() const {
-      return value;
-    }
+    int getValue() const;
+    bool operator<(const Item& other) const;
 
-    bool operator<(const Item& other) const {
-      ++nComparisons;
-      return (value < other.value);
-    }
-
-    static int getNumComparisons() {
-      return nComparisons;
-    }
+    static int getNumComparisons();
 
   private:
     static int nComparisons;
     int value;
 };
-
-int Item::nComparisons = 0;
 
 #endif  // _ITEM_H
