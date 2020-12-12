@@ -4,6 +4,8 @@
 #include "heap.h"
 #include "item.h"
 
+#define MAX_RANK 100
+
 class FibonacciHeap : virtual public IHeap {
   public:
     FibonacciHeap();
@@ -19,9 +21,23 @@ class FibonacciHeap : virtual public IHeap {
   private:
     class FibonacciHeapNode : virtual public INode {
       public:
+        bool marked;
+        unsigned rank;
+        FibonacciHeapNode *child, *parent, *before, *after;
+
+        FibonacciHeapNode(const Item& value)
+          : INode(value), marked(false), rank(0), child(nullptr)
+        {}
     };
 
+    int nodes;
     FibonacciHeapNode* root;
+    FibonacciHeapNode* rank_array[MAX_RANK];
+
+    FibonacciHeapNode* link(FibonacciHeapNode *x, FibonacciHeapNode *y);
+    void cut(FibonacciHeapNode *x);
+    void add_child(FibonacciHeapNode *x, FibonacciHeapNode *y);
+    void decrease_ranks(FibonacciHeapNode *x);
 };
 
 #endif  // _FIBONACCI_HEAP_H
