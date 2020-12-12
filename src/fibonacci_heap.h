@@ -4,8 +4,6 @@
 #include "heap.h"
 #include "item.h"
 
-#define MAX_RANK 100
-
 class FibonacciHeap : virtual public IHeap {
   public:
     FibonacciHeap();
@@ -19,6 +17,8 @@ class FibonacciHeap : virtual public IHeap {
     unsigned size() const override;
 
   private:
+    static constexpr int MAX_RANK = 100;
+
     class FibonacciHeapNode : virtual public INode {
       public:
         bool marked;

@@ -10,6 +10,7 @@
 #include "fibonacci_heap.h"
 #include "heap.h"
 #include "item.h"
+#include "median_select.h"
 
 class TestRegistrar {
   public:
@@ -30,12 +31,12 @@ inline void run_all_tests() {
 }
 
 #define MAKE_TEST(test_name, heap) \
-  void test_name(IHeap* heap); \
   class Testlib_##test_name { \
     public: \
       static void run_testlib() { \
         DRIVE_TEST(test_name, BinaryHeap); \
         DRIVE_TEST(test_name, FibonacciHeap); \
+        DRIVE_TEST(test_name, MedianSelect); \
       } \
       static void run_single_test(IHeap* heap); \
   }; \

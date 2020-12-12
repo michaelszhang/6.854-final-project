@@ -5,16 +5,15 @@ SRCS := $(wildcard $(SRCS_DIR)/*.cc)
 OBJS := $(subst $(SRCS_DIR),$(BUILD_DIR),$(SRCS))
 OBJS := $(OBJS:.cc=.o)
 
+override CXXFLAGS += -Wall -Wextra -O2 -Wshadow -std=c++14
+
 all: main
 
 main: main.cc $(OBJS)
-	$(CXX) -Wall -Wextra -std=c++14 -O2 -Wshadow -o main main.cc $(OBJS)
+	$(CXX) $(CXXFLAGS) -o main main.cc $(OBJS)
 
-build:
-	mkdir -p build
-
-$(BUILD_DIR)/%.o: $(SRCS_DIR)/%.cc build
-	$(CXX) -Wall -Wextra -std=c++14 -O2 -Wshadow -c -o $@ $<
+$(BUILD_DIR)/%.o: $(SRCS_DIR)/%.cc
+	mkdir -p build && $(CXX) $(CXXFLAGS) -c -o $@ $<
 
 clean:
 	rm -rf $(BUILD_DIR) main
