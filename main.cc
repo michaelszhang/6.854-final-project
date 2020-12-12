@@ -1,8 +1,6 @@
-#include <iostream>
-#include "src/binary_heap.h"
 #include "src/tests.h"
 
 int main() {
-  run_test<BinaryHeap>();
+  run_all_tests();
   return 0;
 }

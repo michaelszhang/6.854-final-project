@@ -1,21 +1,31 @@
 #include "tests.h"
 
-#include <assert.h>
-#include <memory>
 #include "heap.h"
-#include "binary_heap.h"
 #include "item.h"
 
-template<typename T>
-void run_test() {
-  std::unique_ptr<IHeap> heap(new T());
-
-  for (int i: {6, 2, 8, 3, 4, 1, 5, 9, 7}) {
+MAKE_TEST(correctness_simple_insert_delete, heap) {
+  for (int i: {6, 10, 2, 15, 8, 12, 3, 0, 14, 4, 1, 11, 5, 13, 9, 7}) {
     heap->insert(Item(i));
   }
-  for (int i = 1; i < 10; ++i) {
-    printf("%d\n", heap->delete_min().getValue());
+  Item::dump_statistics();
+  for (int i = 0; i < 16; ++i) {
+    EXPECT_DELETE(heap, i);
   }
+  Item::dump_statistics();
 }
 
-template void run_test<BinaryHeap>();
+MAKE_TEST(correctness_simple_decreasekey, heap) {
+  std::vector<INode*> nodes;
+  for (int i = 0; i < 16; ++i) {
+    nodes.push_back(heap->insert(i));
+  }
+  Item::dump_statistics();
+  for (int i = 0; i < 16; ++i) {
+    heap->decrease_key(nodes[i], -i);
+  }
+  Item::dump_statistics();
+  for (int i = 0; i < 16; ++i) {
+    EXPECT_DELETE(heap, i-15);
+  }
+  Item::dump_statistics();
+}

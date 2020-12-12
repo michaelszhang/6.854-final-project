@@ -5,7 +5,7 @@ SRCS := $(wildcard $(SRCS_DIR)/*.cc)
 OBJS := $(subst $(SRCS_DIR),$(BUILD_DIR),$(SRCS))
 OBJS := $(OBJS:.cc=.o)
 
-all: clean main
+all: main
 
 main: main.cc $(OBJS)
 	$(CXX) -Wall -Wextra -std=c++14 -O2 -Wshadow -o main main.cc $(OBJS)

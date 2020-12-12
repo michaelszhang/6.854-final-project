@@ -7,13 +7,14 @@ class Item {
   public:
     Item(int value=std::numeric_limits<int>::max());
 
-    int getValue() const;
+    int get_value() const;
     bool operator<(const Item& other) const;
 
-    static int getNumComparisons();
+    static void dump_statistics();
+    static void reset_statistics();
 
   private:
-    static int nComparisons;
+    static int n_comparisons;
     int value;
 };
 

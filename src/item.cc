@@ -1,20 +1,26 @@
 #include "item.h"
 
+#include <stdio.h>
+
 Item::Item(int value)
   : value(value)
 {}
 
-int Item::getValue() const {
+int Item::get_value() const {
   return value;
 }
 
 bool Item::operator<(const Item& other) const {
-  ++nComparisons;
-  return (value < other.value);
+  ++n_comparisons;
+  return (value < other.get_value());
 }
 
-int Item::getNumComparisons() {
-  return nComparisons;
+void Item::dump_statistics() {
+  printf("Number of comparisons: %d\n", n_comparisons);
 }
 
-int Item::nComparisons = 0;
+void Item::reset_statistics() {
+  n_comparisons = 0;
+}
+
+int Item::n_comparisons = 0;
