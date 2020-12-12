@@ -11,7 +11,7 @@ class BinaryHeap : virtual public IHeap {
     ~BinaryHeap();
 
     INode* insert(const Item&) override;
-    void decrease_key(INode* node, const Item&) override;
+    void decrease_key(INode*, const Item&) override;
     Item delete_min() override;
     std::vector<Item> delete_k(unsigned k) override;
 
