@@ -1,35 +1,35 @@
 #ifndef _BINARY_HEAP_H
 #define _BINARY_HEAP_H
 
+#include <vector>
+
 #include "heap.h"
+#include "item.h"
 
-template<typename T>
-class BinaryHeap : virtual public IHeap<T> {
+class BinaryHeap : virtual public IHeap {
   public:
-    BinaryHeap();
+    ~BinaryHeap();
 
-    const INode<T>* insert(const T&) override;
-    void decrease_key(const INode<T>* node) override;
-    T delete_min() override;
-    std::vector<T> delete_k(unsigned k) override;
+    INode* insert(const Item&) override;
+    void decrease_key(INode* node, const Item&) override;
+    Item delete_min() override;
+    std::vector<Item> delete_k(unsigned k) override;
 
     unsigned size() const override;
 
   private:
-    class BinaryHeapNode : public INode<T> {
+    class BinaryHeapNode : virtual public INode {
       public:
-        BinaryHeapNode *left, *right, *parent;
-        int size;
+        unsigned idx;
 
-        BinaryHeapNode(const T& value, BinaryHeapNode* parent)
-          : INode<T>(value), left(nullptr), right(nullptr), parent(parent), size(1)
+        BinaryHeapNode(const Item& value, unsigned idx)
+          : INode(value), idx(idx)
         {}
     };
 
-    const BinaryHeapNode* insert(BinaryHeapNode*& base, BinaryHeapNode* parent, const T& item);
-    unsigned size(const BinaryHeapNode*) const;
+    std::vector<BinaryHeapNode*> nodes;
 
-    BinaryHeapNode* root;
+    void swap_idx(unsigned i1, unsigned i2);
 };
 
 #endif  // _BINARY_HEAP_H

@@ -8,7 +8,7 @@
 
 template<typename T>
 void run_test() {
-  std::unique_ptr<IHeap<Item>> heap(new T());
+  std::unique_ptr<IHeap> heap(new T());
 
   for (int i: {6, 2, 8, 3, 4, 1, 5, 9, 7}) {
     heap->insert(Item(i));
@@ -18,4 +18,4 @@ void run_test() {
   }
 }
 
-template void run_test<BinaryHeap<Item>>();
+template void run_test<BinaryHeap>();

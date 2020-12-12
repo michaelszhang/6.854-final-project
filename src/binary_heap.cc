@@ -1,97 +1,96 @@
 #include "binary_heap.h"
 
-#include <algorithm>
 #include <stdexcept>
 
 #include "item.h"
 
-template<typename T>
-BinaryHeap<T>::BinaryHeap()
-  : root(nullptr)
-{}
-
-template<typename T>
-const INode<T>* BinaryHeap<T>::insert(const T& item) {
-  return static_cast<const INode<T>*>(insert(root, nullptr, item));
+BinaryHeap::~BinaryHeap() {
+  for (BinaryHeapNode* node: nodes) {
+    delete node;
+  }
+  nodes.clear();
 }
 
-template<typename T>
-void BinaryHeap<T>::decrease_key(const INode<T>* node) {
-  BinaryHeapNode* at = const_cast<BinaryHeapNode*>(dynamic_cast<const BinaryHeapNode*>(node));
-  if (at == nullptr) {
-    throw std::runtime_error("Invalid decrease-key node");
-  }
-  while (at->parent != nullptr && at->value < at->parent->value) {
-    std::swap(at->value, at->parent->value);
-    at = at->parent;
-  }
-  if (at->parent == nullptr) {
-    root = at;
-  }
-}
-
-template<typename T>
-T BinaryHeap<T>::delete_min() {
-  if (root == nullptr) {
-    throw std::logic_error("Delete from empty tree");
-  }
-  T result = root->value;
-  for (auto at = root;;) {
-    if (at->left == nullptr && at->right == nullptr) {
-      if (at->parent == nullptr) {
-        root = nullptr;
-      } else {
-        ((at->parent->left == at) ? at->parent->left : at->parent->right) = nullptr;
-      }
-      delete at;
-      break;
-    } else if (at->right == nullptr || (at->left != nullptr && at->left->value < at->right->value)) {
-      at->value = at->left->value;
-      at = at->left;
+INode* BinaryHeap::insert(const Item& item) {
+  unsigned idx = nodes.size();
+  nodes.push_back(new BinaryHeapNode(item, idx));
+  while (idx) {
+    unsigned parent = (idx - 1) / 2;
+    if (nodes[idx]->value < nodes[parent]->value) {
+      swap_idx(idx, parent);
+      idx = parent;
     } else {
-      at->value = at->right->value;
-      at = at->right;
+      break;
     }
   }
+  return nodes[idx];
+}
+
+void BinaryHeap::decrease_key(INode* node, const Item& item) {
+  BinaryHeapNode* rep = dynamic_cast<BinaryHeapNode*>(node);
+  if (rep == nullptr) {
+    throw std::runtime_error("Invalid decrease-key node");
+  }
+  if (rep->value < item) {
+    throw std::runtime_error("Decrease-key must decrease value");
+  }
+  rep->value = item;
+  unsigned idx = rep->idx;
+  while (idx) {
+    unsigned parent = (idx - 1) / 2;
+    if (nodes[idx]->value < nodes[parent]->value) {
+      swap_idx(idx, parent);
+      idx = parent;
+    } else {
+      break;
+    }
+  }
+}
+
+Item BinaryHeap::delete_min() {
+  if (size() == 0) {
+    throw std::runtime_error("Delete from empty tree");
+  }
+  swap_idx(0, size()-1);
+  Item result = nodes.back()->value;
+  delete nodes.back();
+  nodes.pop_back();
+  for (unsigned idx = 0; ;) {
+    unsigned l = (idx * 2 + 1), r = (idx * 2 + 2);
+    Item vl = (l < size()) ? nodes[l]->value : Item();
+    Item vr = (r < size()) ? nodes[r]->value : Item();
+    if (l < size()) {
+      if (vl < vr) {
+        if (vl < nodes[idx]->value) {
+          swap_idx(idx, l);
+          idx = l;
+          continue;
+        }
+      } else {
+        if (vr < nodes[idx]->value) {
+          swap_idx(idx, r);
+          idx = r;
+          continue;
+        }
+      }
+    }
+    break;
+  }
   return result;
 }
 
-template<typename T>
-std::vector<T> BinaryHeap<T>::delete_k(unsigned k) {
-  if (size() < k) {
-    throw std::out_of_range("k too large for delete-k");
-  }
-  std::vector<T> result;
-  result.reserve(k);
-  for (unsigned i = 0; i < k; ++i)
-    result.push_back(delete_min());
-  return result;
+std::vector<Item> BinaryHeap::delete_k(unsigned k) {
+  // TODO[jerry]
+  (void) k;
+  return std::vector<Item>();
 }
 
-template<typename T>
-unsigned BinaryHeap<T>::size() const {
-  return size(root);
+unsigned BinaryHeap::size() const {
+  return nodes.size();
 }
 
-template<typename T>
-const typename BinaryHeap<T>::BinaryHeapNode* BinaryHeap<T>::insert(BinaryHeapNode*& base, BinaryHeapNode* parent, const T& item) {
-  if (base == nullptr) {
-    base = new BinaryHeapNode(item, parent);
-    return base;
-  }
-
-  const T next = std::max(base->value, item);
-  base->value = std::min(base->value, item);
-  base->size += 1;
-
-  return (size(base->left) < size(base->right))
-    ? insert(base->left, base, next)
-    : insert(base->right, base, next);
+void BinaryHeap::swap_idx(unsigned i1, unsigned i2) {
+  std::swap(nodes[i1], nodes[i2]);
+  nodes[i1]->idx = i1;
+  nodes[i2]->idx = i2;
 }
-
-template<typename T>
-unsigned BinaryHeap<T>::size(const BinaryHeapNode* node) const {
-  return (node == nullptr) ? 0 : node->size;
-}
-
-template class BinaryHeap<Item>;

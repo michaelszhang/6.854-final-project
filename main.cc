@@ -1,9 +1,8 @@
 #include <iostream>
 #include "src/binary_heap.h"
-#include "src/item.h"
 #include "src/tests.h"
 
 int main() {
-  run_test<BinaryHeap<Item>>();
+  run_test<BinaryHeap>();
   return 0;
 }
