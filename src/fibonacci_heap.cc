@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <vector>
 
 FibonacciHeap::FibonacciHeap()
   : nodes(0), root(nullptr) {

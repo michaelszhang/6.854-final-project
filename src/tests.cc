@@ -13,7 +13,7 @@ MAKE_TEST(correctness_simple_insert_delete, heap) {
   }
   Item::dump_statistics();
   for (int i = 0; i < 16; ++i) {
-    EXPECT_DELETE(heap, i);
+    expect_delete(heap, i);
   }
   Item::dump_statistics();
 }
@@ -29,7 +29,7 @@ MAKE_TEST(correctness_simple_decreasekey, heap) {
   }
   Item::dump_statistics();
   for (int i = 0; i < 16; ++i) {
-    EXPECT_DELETE(heap, i-15);
+    expect_delete(heap, i-15);
   }
   Item::dump_statistics();
 }
@@ -40,7 +40,7 @@ MAKE_TEST(correctness_simple_delete_1, heap) {
   }
   Item::dump_statistics();
   for (int i = 0; i < 16; ++i) {
-    heap->delete_k(1);
+    expect_delete(heap, std::vector<int>{i});
   }
   Item::dump_statistics();
 }
@@ -51,7 +51,7 @@ MAKE_TEST(correctness_simple_delete_2, heap) {
   }
   Item::dump_statistics();
   for (int i = 0; i < 8; ++i) {
-    heap->delete_k(2);
+    expect_delete(heap, {i*2, i*2+1});
   }
   Item::dump_statistics();
 }

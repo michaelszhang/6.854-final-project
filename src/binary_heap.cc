@@ -1,6 +1,7 @@
 #include "binary_heap.h"
 
 #include <stdexcept>
+#include <vector>
 
 #include "item.h"
 

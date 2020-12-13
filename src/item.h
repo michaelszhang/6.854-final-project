@@ -1,6 +1,7 @@
 #ifndef _ITEM_H
 #define _ITEM_H
 
+#include <functional>
 #include <limits>
 
 class Item {

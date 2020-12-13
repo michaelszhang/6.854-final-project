@@ -1,6 +1,8 @@
 #ifndef _FIBONACCI_HEAP_H
 #define _FIBONACCI_HEAP_H
 
+#include <vector>
+
 #include "heap.h"
 #include "item.h"
 
