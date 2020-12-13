@@ -6,7 +6,9 @@
 #include <memory>
 #include <stdarg.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <vector>
+#include <time.h>
 
 #include "binary_heap.h"
 #include "fibonacci_heap.h"
