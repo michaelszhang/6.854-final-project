@@ -28,18 +28,21 @@ class FibonacciHeap : virtual public IHeap {
         FibonacciHeapNode *child, *parent, *before, *after;
 
         FibonacciHeapNode(const Item& value)
-          : INode(value), marked(false), rank(0), child(nullptr)
+          : INode(value), marked(false), rank(0),
+          child(nullptr), parent(nullptr), before(nullptr), after(nullptr)
         {}
     };
 
-    int nodes;
-    FibonacciHeapNode* root;
-    FibonacciHeapNode* rank_array[MAX_RANK];
+    int heap_size;
+    FibonacciHeapNode *min_node, *last_node;
+    FibonacciHeapNode *rank_array[MAX_RANK];
 
-    FibonacciHeapNode* link(FibonacciHeapNode *x, FibonacciHeapNode *y);
-    void cut(FibonacciHeapNode *x);
     void add_child(FibonacciHeapNode *x, FibonacciHeapNode *y);
-    void decrease_ranks(FibonacciHeapNode *x);
+    FibonacciHeapNode* link(FibonacciHeapNode *x, FibonacciHeapNode *y);
+    FibonacciHeapNode* propagate_link(FibonacciHeapNode *x);
+    void cut(FibonacciHeapNode *x);
+    void maintain_min(FibonacciHeapNode *x);
+    void push_tree(FibonacciHeapNode *x);
 };
 
 #endif  // _FIBONACCI_HEAP_H
