@@ -69,6 +69,12 @@ ItemIterator MedianSelect::find_kth(std::vector<ItemIterator>& list, unsigned k,
   if (list.size() <= 4) {
     // TODO[jerry]: optimize this
     std::sort(list.begin(), list.end(), [](ItemIterator a, ItemIterator b)->bool { return a->value < b->value; });
+    if (deleted != nullptr) {
+      for (unsigned i = 0; i < k-1; ++i) {
+        deleted->push_back(list[i]->value);
+        items.erase(list[i]);
+      }
+    }
     return list[k-1];
   }
   std::vector<ItemIterator> group_medians;
@@ -103,6 +109,10 @@ ItemIterator MedianSelect::find_kth(std::vector<ItemIterator>& list, unsigned k,
     if (smaller.size()+1 == k) {
       return mid;
     } else {
+      if (deleted != nullptr) {
+        deleted->push_back(mid->value);
+        items.erase(mid);
+      }
       return find_kth(larger, k-smaller.size()-1, deleted);
     }
   }

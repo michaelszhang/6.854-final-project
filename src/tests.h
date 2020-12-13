@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <functional>
 #include <memory>
+#include <stdarg.h>
 #include <stdio.h>
 #include <vector>
 
@@ -15,12 +16,18 @@
 
 struct TestFail {
   TestFail(const char* format, ...) {
+    has_failed() = true;
     fprintf(stderr, "Test failed: ");
     va_list arg;
     va_start(arg, format);
     vfprintf(stderr, format, arg);
     va_end(arg);
     fprintf(stderr, "\n");
+  }
+
+  static bool& has_failed() {
+    static bool failed;
+    return failed;
   }
 };
 
@@ -40,10 +47,15 @@ class TestFixture {
     virtual void run_single_test(IHeap* heap) = 0;
 
     void expect_delete(IHeap* heap, int value) {
-      int result = heap->delete_min().get_value();
-      if (result != value) {
-        TestFail("expected to delete %d, not %d\n", value, result);
-      }
+      try {
+        assert_delete(heap, value);
+      } catch (TestFail) {}
+    }
+
+    void expect_delete(IHeap* heap, const std::vector<int>& values) {
+      try {
+        assert_delete(heap, values);
+      } catch (TestFail) {}
     }
 
     void assert_delete(IHeap* heap, int value) {
@@ -53,27 +65,21 @@ class TestFixture {
       }
     }
 
-    void expect_delete(IHeap* heap, std::vector<int> values) {
-      std::sort(values.begin(), values.end());
-      if (get_delete_result(heap, values.size()) != values) {
-        TestFail("delete k returned incorrect result");
-      }
-    }
-
     void assert_delete(IHeap* heap, std::vector<int> values) {
-      std::sort(values.begin(), values.end());
-      if (get_delete_result(heap, values.size()) != values) {
-        throw TestFail("delete k returned incorrect result");
-      }
-    }
-
-  private:
-    std::vector<int> get_delete_result(IHeap* heap, unsigned k) {
-      std::vector<Item> result = heap->delete_k(k);
+      std::vector<Item> result = heap->delete_k(values.size());
       std::vector<int> raw;
       std::transform(result.begin(), result.end(), std::back_inserter(raw), std::bind(&Item::get_value, std::placeholders::_1));
+
       std::sort(raw.begin(), raw.end());
-      return raw;
+      std::sort(values.begin(), values.end());
+      if (raw.size() != values.size()) {
+        throw TestFail("delete-k returned %d items, not %d", (int)raw.size(), (int)values.size());
+      }
+      for (size_t i = 0; i < raw.size(); ++i) {
+        if (raw[i] != values[i]) {
+          throw TestFail("delete-k returned incorrect result, got %d, not %d", raw[i], values[i]);
+        }
+      }
     }
 };
 
@@ -99,14 +105,18 @@ inline void run_all_tests() {
 #define DRIVE_TEST(test_name, heap_type) \
   do { \
     Item::reset_statistics(); \
+    TestFail::has_failed() = false; \
     std::unique_ptr<IHeap> heap(new heap_type()); \
     try { \
       fprintf(stderr, "======= Beginning test: %s/%s\n", #test_name, #heap_type); \
       run_single_test(heap.get()); \
-      fprintf(stderr, "======= Ending test: %s/%s\n\n", #test_name, #heap_type); \
     } catch (TestFail) { \
       fprintf(stderr, ">>>>>>> Aborting test\n"); \
+    } \
+    if (TestFail::has_failed()) { \
       fprintf(stderr, "======= Failing test: %s/%s\n\n", #test_name, #heap_type); \
+    } else { \
+      fprintf(stderr, "======= Ending test: %s/%s\n\n", #test_name, #heap_type); \
     } \
   } while (0)
 

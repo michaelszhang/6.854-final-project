@@ -56,6 +56,15 @@ MAKE_TEST(correctness_simple_delete_2, heap) {
   Item::dump_statistics();
 }
 
+MAKE_TEST(correctness_simple_delete_n_1, heap) {
+  for (int i = 0; i < 16; ++i) {
+    heap->insert(i);
+  }
+  Item::dump_statistics();
+  expect_delete(heap, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14});
+  Item::dump_statistics();
+}
+
 MAKE_TEST(benchmark_delete_n, heap) {
   const int n = LARGE_N;
   for (int i = 0; i < n; ++i) {
