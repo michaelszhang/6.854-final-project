@@ -33,6 +33,8 @@ struct TestFail {
   }
 };
 
+struct TestSkip {};
+
 class TestFixture {
   public:
     static std::vector<std::function<void()>>& test_registrar() {
@@ -104,6 +106,13 @@ inline void run_all_tests() {
   Testlib_##test_name test_instance_##test_name; \
   void Testlib_##test_name::run_single_test(IHeap* heap)
 
+#define SKIP_HEAP(heap, heap_type) \
+  do { \
+    if (dynamic_cast<heap_type*>(heap) != nullptr) { \
+      throw TestSkip(); \
+    } \
+  } while (0)
+
 #define DRIVE_TEST(test_name, heap_type) \
   do { \
     Item::reset_statistics(); \
@@ -114,6 +123,8 @@ inline void run_all_tests() {
       run_single_test(heap.get()); \
     } catch (TestFail) { \
       fprintf(stderr, ">>>>>>> Aborting test\n"); \
+    } catch (TestSkip) { \
+      fprintf(stderr, "======= Skipping test: %s/%s\n\n", #test_name, #heap_type); \
     } \
     if (TestFail::has_failed()) { \
       fprintf(stderr, "======= Failing test: %s/%s\n\n", #test_name, #heap_type); \
