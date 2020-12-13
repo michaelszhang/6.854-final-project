@@ -60,17 +60,6 @@ Item FibonacciHeap::delete_min() {
   }
   Item min_item = min_node->value;
   FibonacciHeapNode *x = last_node;
-
-  FibonacciHeapNode *tmp = last_node;
-  while (tmp != nullptr) {
-    std::cout << tmp->value.get_value() << ' ' << tmp->rank << std::endl;
-    tmp = tmp->before;
-  }
-  std::cout << "MIN_VALUE: " << min_item.get_value() << std::endl;
-  cnt++;
-  if (cnt > 2)
-    exit(0);
-
   unsigned max_rank = 0;
   while (x != nullptr) {
     FibonacciHeapNode *y = x;
@@ -86,6 +75,7 @@ Item FibonacciHeap::delete_min() {
   while (x != nullptr) {
     FibonacciHeapNode *y = x;
     x = x->after;
+    y->before = y->after = nullptr;
     y = propagate_link(y);
     max_rank = std::max(max_rank, y->rank);
   }
@@ -114,7 +104,6 @@ unsigned FibonacciHeap::size() const {
 void FibonacciHeap::add_child(FibonacciHeapNode *x, FibonacciHeapNode *y) {
   x->parent = y;
   FibonacciHeapNode *z = y->child;
-  x->before = nullptr;
   x->after = z;
   if (z != nullptr) {
     z->before = x;
