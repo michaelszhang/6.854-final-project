@@ -1,5 +1,6 @@
 #include "tests.h"
 
+#include <list>
 #include <vector>
 
 #include "heap.h"
@@ -11,8 +12,10 @@ static const int LARGE_N = 1000000;
 MAKE_TEST(soft_heap_tiny_epsilon, _) {
   (void) _;
   SoftHeap heap(0.001);
+  std::list<Item> stuff; // prevent deallocation of temporaries
   for (int i: {6, 10, 2, 15, 8, 12, 3, 0, 14, 4, 1, 11, 5, 13, 9, 7}) {
-    heap.insert(Item(i));
+    stuff.emplace_back(i);
+    heap.insert(stuff.back());
   }
   Item::dump_statistics();
   for (int i = 0; i < 16; ++i) {
@@ -30,8 +33,10 @@ MAKE_TEST(soft_heap_tiny_epsilon, _) {
 MAKE_TEST(soft_heap_corruption_small, _) {
   (void) _;
   SoftHeap heap(0.5);
+  std::list<Item> stuff; // prevent deallocation of temporaries
   for (int i: {6, 10, 2, 15, 8, 12, 3, 0, 14, 4, 1, 11, 5, 13, 9, 7}) {
-    heap.insert(Item(i));
+    stuff.emplace_back(i);
+    heap.insert(stuff.back());
   }
   Item::dump_statistics();
   for (int i = 0; i < 16; ++i) {
@@ -47,6 +52,7 @@ MAKE_TEST(soft_heap_corruption_small, _) {
 MAKE_TEST(soft_heap_corruption_larger, _) {
   (void) _;
   SoftHeap heap(0.5);
+  std::list<Item> stuff;
   for (int i: {97, 85, 71, 23, 64, 89, 99, 66, 93, 36,
                20,  7, 16, 86, 57, 47, 30, 52, 41, 11,
                69, 46, 50, 78,  6, 15, 48, 70, 17, 54,
@@ -57,7 +63,8 @@ MAKE_TEST(soft_heap_corruption_larger, _) {
                61, 74,  3, 75, 19, 10,  1, 60, 87,  4,
                27, 98, 38, 92, 18, 31, 62, 83, 59, 88,
                 0, 49, 44, 29, 84, 65, 72, 45, 14, 94}) {
-    heap.insert(Item(i));
+    stuff.emplace_back(i);
+    heap.insert(stuff.back());
   }
   Item::dump_statistics();
   std::vector<int> answer{ 3,  1,  5,  4, 11,  6,  9,  2, 14, 16,
@@ -107,67 +114,72 @@ MAKE_TEST(correctness_simple_decreasekey, heap) {
   Item::dump_statistics();
 }
 
-MAKE_TEST(correctness_simple_delete_1, heap) {
+MAKE_TEST(correctness_simple_select_1, heap) {
   for (int i = 0; i < 16; ++i) {
     heap->insert(i);
   }
   Item::dump_statistics();
   for (int i = 0; i < 16; ++i) {
-    expect_delete(heap, std::vector<int>{i});
+    expect_select(heap, std::vector<int>{i});
+    expect_delete(heap, i);
   }
   Item::dump_statistics();
 }
 
-MAKE_TEST(correctness_simple_delete_2, heap) {
+MAKE_TEST(correctness_simple_select_2, heap) {
   for (int i = 0; i < 16; ++i) {
     heap->insert(i);
   }
   Item::dump_statistics();
-  for (int i = 0; i < 8; ++i) {
-    expect_delete(heap, {i*2, i*2+1});
+  for (int i = 0; i < 15; ++i) {
+    expect_select(heap, {i, i+1});
+    expect_delete(heap, i);
   }
+  expect_delete(heap, 15);
   Item::dump_statistics();
 }
 
-MAKE_TEST(correctness_simple_delete_n_1, heap) {
+MAKE_TEST(correctness_simple_select_n_1, heap) {
   for (int i = 0; i < 16; ++i) {
     heap->insert(i);
   }
   Item::dump_statistics();
-  expect_delete(heap, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14});
+  expect_select(heap, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14});
   Item::dump_statistics();
 }
 
-MAKE_TEST(benchmark_delete_n, heap) {
+MAKE_TEST(benchmark_select_n, heap) {
   const int n = LARGE_N;
   for (int i = 0; i < n; ++i) {
     heap->insert(i);
   }
   Item::dump_statistics();
-  heap->delete_k(n);
+  heap->select_k(n);
   Item::dump_statistics();
 }
 
-MAKE_TEST(benchmark_delete_1, heap) {
+MAKE_TEST(benchmark_select_1, heap) {
   const int n = LARGE_N;
   for (int i = 0; i < n; ++i) {
     heap->insert(i);
   }
   Item::dump_statistics();
   for (int i = 0; i < n; ++i) {
-    heap->delete_k(1);
+    heap->select_k(1);
+    heap->delete_min();
   }
   Item::dump_statistics();
 }
 
-MAKE_TEST(benchmark_delete_2, heap) {
+MAKE_TEST(benchmark_select_2, heap) {
   const int n = LARGE_N;
   for (int i = 0; i < n; ++i) {
     heap->insert(i);
   }
   Item::dump_statistics();
-  for (int i = 0; i < n/2; ++i) {
-    heap->delete_k(2);
+  for (int i = 0; i < n-1; ++i) {
+    heap->select_k(2);
+    heap->delete_min();
   }
   Item::dump_statistics();
 }

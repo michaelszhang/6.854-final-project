@@ -16,7 +16,7 @@ SoftHeap::SoftHeap(double epsilon)
   : T(compute_T(epsilon)), root(nullptr)
 {}
 
-SoftHeap::CorruptionList SoftHeap::insert(Item item) {
+SoftHeap::CorruptionList SoftHeap::insert(const Item& item) {
   CorruptionList corrupted;
   root = key_swap(meldable_insert(new SoftHeapNode(item), rank_swap(root), corrupted));
   return corrupted;

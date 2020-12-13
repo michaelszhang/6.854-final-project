@@ -76,7 +76,7 @@ Item FibonacciHeap::delete_min() {
   return min_item;
 }
 
-std::vector<Item> FibonacciHeap::delete_k(unsigned k) {
+std::vector<Item> FibonacciHeap::select_k(unsigned k) {
   // TODO[george]
   (void) k;
   nodes -= k;

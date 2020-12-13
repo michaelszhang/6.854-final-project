@@ -52,9 +52,9 @@ class TestFixture {
       } catch (TestFail) {}
     }
 
-    void expect_delete(IHeap* heap, const std::vector<int>& values) {
+    void expect_select(IHeap* heap, const std::vector<int>& values) {
       try {
-        assert_delete(heap, values);
+        assert_select(heap, values);
       } catch (TestFail) {}
     }
 
@@ -65,19 +65,19 @@ class TestFixture {
       }
     }
 
-    void assert_delete(IHeap* heap, std::vector<int> values) {
-      std::vector<Item> result = heap->delete_k(values.size());
+    void assert_select(IHeap* heap, std::vector<int> values) {
+      std::vector<Item> result = heap->select_k(values.size());
       std::vector<int> raw;
       std::transform(result.begin(), result.end(), std::back_inserter(raw), std::bind(&Item::get_value, std::placeholders::_1));
 
       std::sort(raw.begin(), raw.end());
       std::sort(values.begin(), values.end());
       if (raw.size() != values.size()) {
-        throw TestFail("delete-k returned %d items, not %d", (int)raw.size(), (int)values.size());
+        throw TestFail("select-k returned %d items, not %d", (int)raw.size(), (int)values.size());
       }
       for (size_t i = 0; i < raw.size(); ++i) {
         if (raw[i] != values[i]) {
-          throw TestFail("delete-k returned incorrect result, got %d, not %d", raw[i], values[i]);
+          throw TestFail("select-k returned incorrect result, got %d, not %d", raw[i], values[i]);
         }
       }
     }

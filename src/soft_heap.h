@@ -25,7 +25,7 @@ class SoftHeap {
 
     SoftHeap(double epsilon);
 
-    CorruptionList insert(Item);
+    CorruptionList insert(const Item&);
     const SoftHeapEntry& find_min() const;
     CorruptionList delete_min();
 

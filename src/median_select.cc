@@ -5,11 +5,9 @@
 #include <stdexcept>
 #include <vector>
 
-typedef std::list<MedianSelect::MedianSelectItem>::iterator ItemIterator;
-
-ItemIterator median_of_five(std::vector<ItemIterator>::iterator begin, std::vector<ItemIterator>::iterator end) {
+Item median_of_five(std::vector<Item>::iterator begin, std::vector<Item>::iterator end) {
   // TODO[jerry]: optimize this
-  std::sort(begin, end, [](ItemIterator a, ItemIterator b)->bool { return a->value < b->value; });
+  std::sort(begin, end, [](Item a, Item b)->bool { return a < b; });
   return *(begin+2);
 }
 
@@ -28,7 +26,7 @@ void MedianSelect::decrease_key(INode* node, const Item& item) {
 
 Item MedianSelect::delete_min() {
   if (size() == 0) {
-    throw std::runtime_error("Delete from empty tree");
+    throw std::runtime_error("Delete from empty structure");
   }
   auto it = items.begin();
   for (auto it2 = ++items.begin(); it2 != items.end(); ++it2) {
@@ -41,7 +39,7 @@ Item MedianSelect::delete_min() {
   return result;
 }
 
-std::vector<Item> MedianSelect::delete_k(unsigned k) {
+std::vector<Item> MedianSelect::select_k(unsigned k) {
   if (k > size()) {
     throw std::out_of_range("Not enough elements to delete");
   } else if (k == size()) {
@@ -49,35 +47,27 @@ std::vector<Item> MedianSelect::delete_k(unsigned k) {
     for (const MedianSelectItem& item: items) {
       result.push_back(item.value);
     }
-    items.clear();
     return result;
   }
-  std::vector<ItemIterator> all;
-  for (auto it = items.begin(); it != items.end(); ++it) {
-    all.push_back(it);
+  std::vector<Item> all;
+  for (const MedianSelectItem& item: items) {
+    all.push_back(item.value);
   }
-  std::vector<Item> result;
-  find_kth(all, k+1, &result);
-  return result;
+  return select_k(all, k);
 }
 
 unsigned MedianSelect::size() const {
   return items.size();
 }
 
-ItemIterator MedianSelect::find_kth(std::vector<ItemIterator>& list, unsigned k, std::vector<Item>* deleted) {
+std::vector<Item> MedianSelect::select_k(std::vector<Item>& list, unsigned k) {
   if (list.size() <= 4) {
     // TODO[jerry]: optimize this
-    std::sort(list.begin(), list.end(), [](ItemIterator a, ItemIterator b)->bool { return a->value < b->value; });
-    if (deleted != nullptr) {
-      for (unsigned i = 0; i < k-1; ++i) {
-        deleted->push_back(list[i]->value);
-        items.erase(list[i]);
-      }
-    }
-    return list[k-1];
+    std::sort(list.begin(), list.end(), [](Item a, Item b)->bool { return a < b; });
+    return std::vector<Item>(list.begin(), list.begin()+k);
   }
-  std::vector<ItemIterator> group_medians;
+
+  std::vector<Item> group_medians;
   for (unsigned i = 0; ; i+=5) {
     if (i+5 <= list.size()) {
       group_medians.push_back(median_of_five(list.begin()+i, list.begin()+i+5));
@@ -88,32 +78,25 @@ ItemIterator MedianSelect::find_kth(std::vector<ItemIterator>& list, unsigned k,
       break;
     }
   }
-  auto mid = find_kth(group_medians, (group_medians.size()+1) / 2);
-  std::vector<ItemIterator> smaller, larger;
-  for (const auto& it: list) {
-    if (it->value < mid->value) {
-      smaller.push_back(it);
-    } else if (it != mid) {
-      larger.push_back(it);
+  auto mid = select_k(group_medians, (group_medians.size()+1) / 2).back();
+  std::vector<Item> smaller, larger;
+  for (Item item: list) {
+    if (item < mid) {
+      smaller.push_back(item);
+    } else if (mid < item) {  // TODO[jerry]: don't waste this comparison
+      larger.push_back(item);
     }
   }
   if (smaller.size()+1 > k) {
-    return find_kth(smaller, k, deleted);
+    return select_k(smaller, k);
   } else {
-    for (ItemIterator it: smaller) {
-      if (deleted != nullptr) {
-        deleted->push_back(it->value);
-        items.erase(it);
-      }
-    }
-    if (smaller.size()+1 == k) {
-      return mid;
+    smaller.push_back(mid);
+    if (smaller.size() == k) {
+      return smaller;
     } else {
-      if (deleted != nullptr) {
-        deleted->push_back(mid->value);
-        items.erase(mid);
-      }
-      return find_kth(larger, k-smaller.size()-1, deleted);
+      std::vector<Item> more = select_k(larger, k-smaller.size());
+      smaller.insert(smaller.end(), more.begin(), more.end());
+      return smaller;
     }
   }
 }

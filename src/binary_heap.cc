@@ -1,9 +1,12 @@
 #include "binary_heap.h"
 
+#include <algorithm>
 #include <stdexcept>
+#include <unordered_map>
 #include <vector>
 
 #include "item.h"
+#include "soft_heap.h"
 
 BinaryHeap::~BinaryHeap() {
   for (BinaryHeapNode* node: nodes) {
@@ -80,10 +83,53 @@ Item BinaryHeap::delete_min() {
   return result;
 }
 
-std::vector<Item> BinaryHeap::delete_k(unsigned k) {
-  // TODO[jerry]
-  (void) k;
-  return std::vector<Item>();
+std::vector<Item> BinaryHeap::select_k(unsigned k) {
+  std::vector<Item> result;
+  std::unordered_map<const Item*, unsigned> contents;
+  std::vector<unsigned> todo;
+  SoftHeap q(0.25);
+
+  auto push_item = [this, &result, &contents, &todo, &q]() {
+    unsigned idx = todo.back();
+    todo.pop_back();
+    if (idx >= nodes.size()) {
+      return;
+    }
+
+    result.push_back(nodes[idx]->value);
+    contents[&nodes[idx]->value] = idx;
+
+    SoftHeap::CorruptionList corrupted = q.insert(nodes[idx]->value);
+    for (const Item* item: corrupted) {
+      todo.push_back(contents[item] * 2 + 1);
+      todo.push_back(contents[item] * 2 + 2);
+    }
+  };
+
+  todo.push_back(0);
+  push_item();
+  if (!todo.empty()) {
+    throw std::runtime_error("corrupted after first insert!?");
+  }
+  for (unsigned i = 1; i < k; ++i) {
+    const SoftHeapEntry& min = q.find_min();
+    if (!min.corrupted) {
+      todo.push_back(contents[&min.item] * 2 + 1);
+      todo.push_back(contents[&min.item] * 2 + 2);
+    }
+    SoftHeap::CorruptionList corrupted = q.delete_min();
+    for (const Item* item: corrupted) {
+      todo.push_back(contents[item] * 2 + 1);
+      todo.push_back(contents[item] * 2 + 2);
+    }
+    while (!todo.empty()) {
+      push_item();
+    }
+  }
+  // TODO[jerry]: do this better
+  std::sort(result.begin(), result.end());
+  while (result.size() > k) result.pop_back();
+  return result;
 }
 
 unsigned BinaryHeap::size() const {
