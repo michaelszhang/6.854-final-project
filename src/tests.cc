@@ -5,8 +5,11 @@
 #include <iostream>
 #include <map>
 
+#include "binary_heap.h"
+#include "fibonacci_heap.h"
 #include "heap.h"
 #include "item.h"
+#include "median_select.h"
 #include "soft_heap.h"
 
 // Generators
@@ -111,7 +114,9 @@ static const int LARGE_N = 1000000;
 static const int K = 1;
 
 MAKE_TEST(soft_heap_tiny_epsilon, _) {
-  (void) _;
+  SKIP_HEAP(_, BinaryHeap);
+  SKIP_HEAP(_, FibonacciHeap);
+
   SoftHeap heap(0.001);
   std::list<Item> stuff; // prevent deallocation of temporaries
   for (int i: {6, 10, 2, 15, 8, 12, 3, 0, 14, 4, 1, 11, 5, 13, 9, 7}) {
@@ -132,7 +137,9 @@ MAKE_TEST(soft_heap_tiny_epsilon, _) {
 }
 
 MAKE_TEST(soft_heap_corruption_small, _) {
-  (void) _;
+  SKIP_HEAP(_, BinaryHeap);
+  SKIP_HEAP(_, FibonacciHeap);
+
   SoftHeap heap(0.5);
   std::list<Item> stuff; // prevent deallocation of temporaries
   for (int i: {6, 10, 2, 15, 8, 12, 3, 0, 14, 4, 1, 11, 5, 13, 9, 7}) {
@@ -151,7 +158,9 @@ MAKE_TEST(soft_heap_corruption_small, _) {
 }
 
 MAKE_TEST(soft_heap_corruption_larger, _) {
-  (void) _;
+  SKIP_HEAP(_, BinaryHeap);
+  SKIP_HEAP(_, FibonacciHeap);
+
   SoftHeap heap(0.5);
   std::list<Item> stuff;
   for (int i: {97, 85, 71, 23, 64, 89, 99, 66, 93, 36,
@@ -260,6 +269,8 @@ MAKE_TEST(benchmark_select_n, heap) {
 }
 
 MAKE_TEST(benchmark_select_1, heap) {
+  SKIP_HEAP(heap, MedianSelect);
+
   const int n = LARGE_N;
   for (int i = 0; i < n; ++i) {
     heap->insert(i);
@@ -273,6 +284,8 @@ MAKE_TEST(benchmark_select_1, heap) {
 }
 
 MAKE_TEST(benchmark_select_2, heap) {
+  SKIP_HEAP(heap, MedianSelect);
+
   const int n = LARGE_N;
   for (int i = 0; i < n; ++i) {
     heap->insert(i);
