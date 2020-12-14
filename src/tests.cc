@@ -16,6 +16,7 @@
 // Testing
 static const int LARGE_N = 1000000;
 static const int K = 1;
+static const int MIN_VALUE = -10000;
 
 MAKE_TEST(soft_heap_tiny_epsilon, _) {
   RUN_ONCE_ONLY(_);
@@ -198,43 +199,53 @@ MAKE_TEST(benchmark_delete_2, heap) {
   }
   Item::dump_statistics();
 }
-MAKE_TEST(benchmark_ordered_values_ordered_operations_uniform_deckey, heap) {
-	const int n = 100;
-	const int k = 3;
+
+void benchmark_test(std::vector<int> values,
+										std::vector<int> operations,
+										IHeap* heap) {
+  DecreaseKeySampler sampler;
+  std::map<int, INode*> value_to_pointer;
+	int idx = 0, val;
+	INode *node;
+
+	for (int op: operations) {
+		switch ((OPERATION)op) {
+			case INSERT:
+				val = values[idx++];
+				node = heap->insert(Item(val));
+				value_to_pointer[val] = node;
+				sampler.add(node);
+				break;
+			case DECREASE_KEY:
+				node = sampler.sampleUniformTime();
+				val = randomUniform() * (node->value.get_value() + MIN_VALUE) - MIN_VALUE - 1;
+				heap->decrease_key(node, Item(val));
+				break;
+			case DELETE_K:
+				Item min_item = heap->delete_min(); // CHANGE TO DEL K
+				sampler.remove(value_to_pointer[min_item.get_value()]);
+				break;
+		}
+  }
+	Item::dump_statistics();
+}
+
+MAKE_TEST(benchmark_ordered_values_ordered_operations, heap) {
+	const int n = 10;
+	const int k = 1;
 	const int d = n; // num dec key
-  const int base = 10; // min range of dec key
 	std::vector<int> values, operations;
+	// increasing order
 	values = value_sequence(n, 0.5);
 	// inserts -> dec key -> select k - > del min
-	std::vector<std::vector<double> > transitions = {{0.999999, 0.000001, 0, 0},
-		                                               {0, 0.999999, 0, 0.000001},
-		                                               {0, 0, 1, 0},
-		                                               {0, 0, 0.000001, 0.999999}};
+	// NOTE DEF IS REVERSE OF STOCHASTIC MATRIX
+	std::vector<std::vector<double>> transitions = {{1 - EPSILON, EPSILON, 0},
+		                                              {0, 1 - EPSILON, EPSILON},
+		                                              {0, 0, 1}};
 	operations = operation_sequence(transitions, n, d, k);
-	DecreaseKeySampler sampler;
-
-	std::map<int, INode*> value_to_pointer;
-	int idx = 0;
 	for (int op : operations) {
-		if (op == 0) {
-      // insert
-			int cur_value = values[idx++];
-			INode* new_node = heap->insert(Item(cur_value));
-			value_to_pointer[cur_value] = new_node;
-			sampler.add(new_node);
-		} else if (op == 1) {
-      // dec key
-			INode* node = sampler.sampleUniformTime();
-			int new_value = randomUniform() * (node->value.get_value() + base) - base - 1;
-			heap->decrease_key(node, Item(new_value));
-		} else if (op == 2) {
-      // del min
-			Item minItem = heap->delete_min();
-			//std::cout << minItem.get_value() << std::endl;
-			sampler.remove(value_to_pointer[minItem.get_value()]);
-		} else if (op == 3) {
-      // select k
-    }
+		std::cout << op << std::endl;
 	}
-	Item::dump_statistics();
+	exit(0);
+
 }

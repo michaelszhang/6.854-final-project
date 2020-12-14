@@ -48,7 +48,7 @@ int next_state(int *operations_left, std::vector<double> &pdf) {
 	double sum = 0;
 	std::vector<double> cdf;
 	std::vector<int> sample_space;
-	for (int i = 0; i < pdf.size(); i++) {
+	for (unsigned i = 0; i < pdf.size(); i++) {
 		if (operations_left[i] > 0) {
 			sum += pdf[i];
 			cdf.push_back(sum);
@@ -59,7 +59,7 @@ int next_state(int *operations_left, std::vector<double> &pdf) {
 		return -1;
 	}
 	double r = randomUniform() * sum;
-	for (int i = 0; i < cdf.size() - 1; i++) {
+	for (unsigned i = 0; i < cdf.size() - 1; i++) {
 		if (r < cdf[i]) {
 			return sample_space[i];
 		}
@@ -68,22 +68,20 @@ int next_state(int *operations_left, std::vector<double> &pdf) {
 }
 
 std::vector<int> operation_sequence(std::vector<std::vector<double> > &transitions, int n0, int n1, int k) {
-	// transitions contain the PDFs of the chain matrix
-	// 0, 1, 2, 3 are insert, dec key, del min, select k
-	int operations_left[4] = {n0, n1, 0, 0};
+  // Return sequence of operations based on parameters
+	// Transitions contain the PDFs of the chain matrix, n0 num inserts, n1 num dec key
+	int operations_left[NUM_OPERATIONS] = {n0, n1, 0}; // 0, 1, 2 are insert, dec key, del k
 	int cur_state = 0;
-	int heap_size = 0;
+  int inserted = 0;
 	std::vector<int> v;
-	while (cur_state != -1 && (operations_left[0] + operations_left[2]) > 0) {
+	while (cur_state != -1 && (operations_left[INSERT] + operations_left[DELETE_K]) > 0) {
 		v.push_back(cur_state);
 		operations_left[cur_state]--;
-		if (cur_state == 0) {
-			heap_size++;
-			operations_left[3] += (heap_size % k == 0);
-			operations_left[2]++;
-		} else if (cur_state == 2) {
-			operations_left[3] -= (heap_size % k == 0);
-			heap_size--;
+		if (cur_state == INSERT) {
+      inserted++;
+			operations_left[DELETE_K] += (inserted % k == 0);
+		} else if (cur_state == DELETE_K) {
+      inserted -= k;
 		}
 		cur_state = next_state(operations_left, transitions[cur_state]);
 	}

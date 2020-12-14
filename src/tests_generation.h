@@ -3,6 +3,10 @@
 
 #include <map>
 
+#define EPSILON 1e-9
+#define NUM_OPERATIONS 3
+enum OPERATION {INSERT=0, DECREASE_KEY=1, DELETE_K=2};
+
 class DecreaseKeySampler {
 public:
 	void add(INode* n);
@@ -14,7 +18,6 @@ private:
 	std::map<double, INode*> distribution;
 	int time = 0;
 };
-
 
 double randomUniform();
 std::vector<int> value_sequence(int n, double alpha);
