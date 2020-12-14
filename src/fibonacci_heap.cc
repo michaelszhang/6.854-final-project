@@ -24,6 +24,24 @@ FibonacciHeap::~FibonacciHeap()
   // TBD
 }
 
+void FibonacciHeap::print_tree() {
+  std::cout << "TREE SIZE:" << ' ' << heap_size << std::endl;
+  if (heap_size == 0)
+    return;
+  int sum = 0;
+  FibonacciHeapNode *tmp = last_node;
+  while (tmp != nullptr) {
+    if (tmp->after == tmp) {
+      throw std::runtime_error("Self Loop");
+    }
+    std::cout << tmp->value.get_value() << ' ' << tmp->rank << std::endl;
+    sum += tmp->rank;
+    tmp = tmp->after;
+  }
+  //assert(sum == heap_size);
+  std::cout << std::endl;
+}
+
 INode *FibonacciHeap::insert(const Item &item)
 {
   FibonacciHeapNode *x = new FibonacciHeapNode(item);
@@ -35,7 +53,7 @@ INode *FibonacciHeap::insert(const Item &item)
 
 void FibonacciHeap::decrease_key(INode *node, const Item &item)
 {
-  FibonacciHeapNode *rep = dynamic_cast<FibonacciHeapNode *>(node), *x = rep->parent;
+  FibonacciHeapNode *rep = dynamic_cast<FibonacciHeapNode *>(node), *x;
   if (rep == nullptr)
   {
     throw std::runtime_error("Invalid decrease-key node");
@@ -50,6 +68,7 @@ void FibonacciHeap::decrease_key(INode *node, const Item &item)
   {
     return;
   }
+  x = rep->parent;
   cut(rep);
   while (x->marked)
   { // root is always unmarked
@@ -70,6 +89,7 @@ Item FibonacciHeap::delete_min()
   {
     throw std::runtime_error("Delete from empty tree");
   }
+  print_tree();
   Item min_item = min_node->value;
   FibonacciHeapNode *x = last_node;
   unsigned max_rank = 0;
@@ -95,6 +115,7 @@ Item FibonacciHeap::delete_min()
   }
   coalesce_nodes(max_rank);
   heap_size--;
+  print_tree();
   return min_item;
 }
 
@@ -285,6 +306,7 @@ std::vector<Item> FibonacciHeap::delete_k(unsigned k)
   {
     delete node;
   }
+  heap_size -= k;
   return result;
 }
 
@@ -361,6 +383,7 @@ void FibonacciHeap::cut(FibonacciHeapNode *x)
   {
     x->after->before = x->before;
   }
+  x->parent = nullptr;
   y->rank--;
 }
 

@@ -48,6 +48,7 @@ class FibonacciHeap : virtual public IHeap {
     void cut(FibonacciHeapNode *x);
     void maintain_min(FibonacciHeapNode *x);
     void push_tree(FibonacciHeapNode *x);
+    void print_tree();
 };
 
 #endif  // _FIBONACCI_HEAP_H
