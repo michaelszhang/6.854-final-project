@@ -1,7 +1,9 @@
 #include "fibonacci_heap.h"
+#include "soft_heap.h"
 
 #include <algorithm>
 #include <iostream>
+#include <unordered_map>
 #include <vector>
 
 FibonacciHeap::FibonacciHeap()
@@ -22,7 +24,6 @@ INode* FibonacciHeap::insert(const Item& item) {
   FibonacciHeapNode* x = new FibonacciHeapNode(item);
   maintain_min(x);
   push_tree(x);
-  FibonacciHeapNode *tmp = last_node;
   heap_size++;
   return x;
 }
@@ -63,7 +64,7 @@ Item FibonacciHeap::delete_min() {
   unsigned max_rank = 0;
   while (x != nullptr) {
     FibonacciHeapNode *y = x;
-    x = x->before;
+    x = x->after;
     if (y != min_node) {
       y = propagate_link(y);
       max_rank = std::max(max_rank, y->rank);
@@ -91,10 +92,100 @@ Item FibonacciHeap::delete_min() {
 }
 
 std::vector<Item> FibonacciHeap::select_k(unsigned k) {
-  // TODO[george]
-  (void) k;
-  heap_size -= k;
-  return std::vector<Item>();
+  FibonacciHeapNode *root = new FibonacciHeapNode(Item(std::numeric_limits<int>::min()));
+  root->child = last_node;
+  std::vector<Item> result;
+  std::unordered_map<const Item*, FibonacciHeapNode*> contents;
+  std::vector<FibonacciHeapNode*> todo;
+  SoftHeap q(0.125);
+
+  auto heapify_children = [](FibonacciHeapNode* child) {
+    std::vector<FibonacciHeapNode*> nodes;
+    while (child != nullptr) {
+      nodes.push_back(child);
+      child = child->after;
+    }
+    unsigned rank = nodes.size();
+    for (int i = rank / 2 - 1; i >= 0; i--) {
+      for (unsigned idx = i;;) {
+        unsigned l = (idx * 2 + 1), r = (idx * 2 + 2);
+        Item vl = (l < rank) ? nodes[l]->value : Item();
+        Item vr = (r < rank) ? nodes[r]->value : Item();
+        if (l < rank) {
+          if (vl < vr) {
+            if (vl < nodes[idx]->value) {
+              std::swap(nodes[l], nodes[idx]);
+              idx = l;
+              continue;
+            }
+          } else {
+            if (vr < nodes[idx]->value) {
+              std::swap(nodes[r], nodes[idx]);
+              idx = r;
+              continue;
+            }
+          }
+        }
+        break;
+      }
+    }
+    for (int i = rank / 2 - 1; i >= 0; i--) {
+      unsigned l = (i * 2 + 1), r = (i * 2 + 2);
+      nodes[i]->left = nodes[l];
+      if (r < rank) {
+        nodes[i]->right = nodes[r];
+      }
+    }
+    return nodes[0];
+  };
+
+  auto update_todo = [&contents, &todo, &heapify_children](const Item* item) {
+    FibonacciHeapNode *x = contents[item];
+    if (x->left != nullptr) {
+      todo.push_back(x->left);
+    }
+    if (x->right != nullptr) {
+      todo.push_back(x->right);
+    }
+    if (x->child != nullptr) {
+      todo.push_back(heapify_children(x->child));
+    }
+  };
+
+  auto push_item = [&result, &contents, &todo, &q, &update_todo]() {
+    FibonacciHeapNode* node = todo.back();
+    todo.pop_back();
+    result.push_back(node->value);
+    contents[&node->value] = node;
+    SoftHeap::CorruptionList corrupted = q.insert(node->value);
+    for (const Item* item: corrupted) {
+      update_todo(item);
+    }
+  };
+
+  todo.push_back(root);
+  push_item();
+  result.pop_back(); // remove root
+  if (!todo.empty()) {
+    throw std::runtime_error("corrupted after first insert!?");
+  }
+  for (unsigned i = 1; i <= k; ++i) {
+    const SoftHeapEntry& min = q.find_min();
+    if (!min.corrupted) {
+      update_todo(&min.item);
+    }
+    SoftHeap::CorruptionList corrupted = q.delete_min();
+    for (const Item* item: corrupted) {
+      update_todo(item);
+    }
+    while (!todo.empty()) {
+      push_item();
+    }
+  }
+  // TODO[jerry]: do this better
+  std::sort(result.begin(), result.end());
+  while (result.size() > k) result.pop_back();
+  return result;
 }
 
 unsigned FibonacciHeap::size() const {
@@ -158,8 +249,8 @@ void FibonacciHeap::push_tree(FibonacciHeapNode *x) {
   if (last_node == nullptr) {
     last_node = x;
   } else {
-    last_node->after = x;
-    x->before = last_node;
+    last_node->before = x;
+    x->after = last_node;
     last_node = x;
   }
 }

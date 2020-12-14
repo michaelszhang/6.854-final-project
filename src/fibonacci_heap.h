@@ -27,9 +27,13 @@ class FibonacciHeap : virtual public IHeap {
         unsigned rank;
         FibonacciHeapNode *child, *parent, *before, *after;
 
+        // for select k (middle implicit)
+        FibonacciHeapNode *left, *right;
+
         FibonacciHeapNode(const Item& value)
           : INode(value), marked(false), rank(0),
-          child(nullptr), parent(nullptr), before(nullptr), after(nullptr)
+            child(nullptr), parent(nullptr), before(nullptr), after(nullptr),
+            left(nullptr), right(nullptr)
         {}
     };
 
