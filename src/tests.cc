@@ -329,15 +329,39 @@ void benchmark_uniform_random_uniform_random_ordered(IHeap *heap, int k) {
 }
 
 void benchmark_cliffs_uniform_random(IHeap *heap, int k) {
-  (void) heap;
-  (void) k;
-  throw TestFail("not implemented");
+  const int N_SECTIONS = 10;
+  const int N = BENCHMARK_N - BENCHMARK_N % N_SECTIONS;
+  std::vector<int> values;
+  for (int section = 0; section < N_SECTIONS; ++section) {
+    for (int i = section; i < N; i+=10) {
+      values.push_back(i);
+    }
+  }
+  std::vector<std::vector<double>> transitions = {{1.0 / 3, 1.0 / 3, 1.0 / 3},
+		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3},
+		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3}};
+  std::vector<int> operations = operation_sequence(transitions, N, N, k);
+  benchmark_test(values, operations, heap);
 }
 
 void benchmark_hills_uniform_random(IHeap *heap, int k) {
-  (void) heap;
-  (void) k;
-  throw TestFail("not implemented");
+  const int N_SECTIONS = 5;
+  const int N = BENCHMARK_N - BENCHMARK_N % (2*N_SECTIONS);
+  std::vector<int> values;
+  for (int section = 0; section < N_SECTIONS; ++section) {
+    int i = section;
+    for (; i < N; i+=2*N_SECTIONS) {
+      values.push_back(i);
+    }
+    for (i -= N_SECTIONS; i >= 0; i -= 2*N_SECTIONS) {
+      values.push_back(i);
+    }
+  }
+  std::vector<std::vector<double>> transitions = {{1.0 / 3, 1.0 / 3, 1.0 / 3},
+		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3},
+		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3}};
+  std::vector<int> operations = operation_sequence(transitions, N, N, k);
+  benchmark_test(values, operations, heap);
 }
 
 void benchmark_uniform_random_sequential_decreasekey(IHeap *heap, int k) {
