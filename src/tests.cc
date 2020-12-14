@@ -158,6 +158,7 @@ MAKE_TEST(correctness_simple_delete_n_1, heap) {
 }
 
 MAKE_TEST(benchmark_delete_n, heap) {
+	SKIP_HEAP(heap, BinaryHeap);
   SKIP_HEAP(heap, HeapAdapter<MedianSelect>);
   const int n = LARGE_N;
   for (int i = 0; i < n; ++i) {

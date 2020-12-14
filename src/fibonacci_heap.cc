@@ -212,7 +212,6 @@ std::vector<Item> FibonacciHeap::delete_k(unsigned k)
 
   // TODO[jerry]: do this better
   std::sort(result.begin(), result.end());
-<<<<<<< Updated upstream
   while (result.size() > k)
     result.pop_back();
 
@@ -224,15 +223,9 @@ std::vector<Item> FibonacciHeap::delete_k(unsigned k)
       k_result_nodes.emplace(node);
       k_result_nodes_vec.push_back(node);
     }
-=======
-  while (result.size() > k) result.pop_back();
-  /*
-  // ======================
-  vector<FibonacciHeapNode*> result_nodes;
-  for (item: results) {
-    result_nodes.push_back(contents[item]);
->>>>>>> Stashed changes
   }
+
+  //std::cout << k_result_nodes_vec.size() << std::endl;
 
   unsigned max_rank = 0;
   min_node = last_node = nullptr;
@@ -249,19 +242,17 @@ std::vector<Item> FibonacciHeap::delete_k(unsigned k)
       max_rank = std::max(max_rank, c->rank);
     }
   }
+  std::cout << "ASd" << std::endl;
+  std::cout << k_result_nodes_vec.size() << std::endl;
   for (auto node : k_result_nodes_vec) {
+    //std::cout << node->value.get_value() << std::endl;
     delete node;
   }
+  std::cout << "ASd" << std::endl;
   coalesce_nodes(max_rank);
-<<<<<<< Updated upstream
   if (min_node == nullptr) {
     throw std::runtime_error("cri");
   }
-=======
-  */
-
-  // ======================
->>>>>>> Stashed changes
 
   return result;
 }
