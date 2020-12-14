@@ -68,8 +68,10 @@ void SoftHeap::fill(SoftHeapNode* node, CorruptionList& corrupted) {
 
   node->key = node->left->key;
   if (!node->set.empty()) {
-    node->set.front().corrupted = true;
-    corrupted.push_back(&node->set.front().item);
+    if (!node->set.front().corrupted) {
+      corrupted.push_back(&node->set.front().item);
+      node->set.front().corrupted = true;
+    }
   }
   node->set.splice(node->set.begin(), node->left->set);
   node->left->set.clear();
