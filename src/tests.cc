@@ -200,7 +200,7 @@ MAKE_TEST(benchmark_delete_2, heap) {
 
 void benchmark_test(std::vector<int> values,
 										std::vector<int> operations,
-										IHeap* heap) {
+										IHeap* heap, int k) {
   DecreaseKeySampler sampler;
   std::map<int, INode*> value_to_pointer;
 	int idx = 0, val;
@@ -220,7 +220,7 @@ void benchmark_test(std::vector<int> values,
 				heap->decrease_key(node, Item(val));
 				break;
 			case DELETE_K:
-				Item min_item = heap->delete_min(); // CHANGE TO DEL K
+				Item min_item = heap->delete_k(k);
 				sampler.remove(value_to_pointer[min_item.get_value()]);
 				break;
 		}
@@ -273,7 +273,7 @@ void benchmark_ordered_ordered(IHeap *heap, int k) {
 		                                              {0, 1 - EPSILON, EPSILON},
 		                                              {0, 0, 1}};
   generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
-  benchmark_test(values, operations, heap);
+  benchmark_test(values, operations, heap, k);
 }
 
 void benchmark_reverse_ordered_ordered(IHeap *heap, int k) {
@@ -284,7 +284,7 @@ void benchmark_reverse_ordered_ordered(IHeap *heap, int k) {
 		                                              {0, 0, 1}};
   std::reverse(values.begin(), values.end());
   generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
-  benchmark_test(values, operations, heap);
+  benchmark_test(values, operations, heap, k);
 }
 
 void benchmark_ordered_uniform_random(IHeap *heap, int k) {
@@ -294,7 +294,7 @@ void benchmark_ordered_uniform_random(IHeap *heap, int k) {
 		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3},
 		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3}};
   generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
-  benchmark_test(values, operations, heap);
+  benchmark_test(values, operations, heap, k);
 }
 
 void benchmark_reverse_ordered_uniform_random(IHeap *heap, int k) {
@@ -305,7 +305,7 @@ void benchmark_reverse_ordered_uniform_random(IHeap *heap, int k) {
 		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3}};
   std::reverse(values.begin(), values.end());
   generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
-  benchmark_test(values, operations, heap);
+  benchmark_test(values, operations, heap, k);
 }
 
 void benchmark_uniform_random_ordered(IHeap *heap, int k) {
@@ -315,7 +315,7 @@ void benchmark_uniform_random_ordered(IHeap *heap, int k) {
 		                                              {0, 1 - EPSILON, EPSILON},
 		                                              {0, 0, 1}};
   generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
-  benchmark_test(values, operations, heap);
+  benchmark_test(values, operations, heap, k);
 }
 
 void benchmark_uniform_random_uniform_random_ordered(IHeap *heap, int k) {
@@ -325,7 +325,7 @@ void benchmark_uniform_random_uniform_random_ordered(IHeap *heap, int k) {
 		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3},
 		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3}};
   generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
-  benchmark_test(values, operations, heap);
+  benchmark_test(values, operations, heap, k);
 }
 
 void benchmark_cliffs_uniform_random(IHeap *heap, int k) {
@@ -341,7 +341,7 @@ void benchmark_cliffs_uniform_random(IHeap *heap, int k) {
 		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3},
 		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3}};
   std::vector<int> operations = operation_sequence(transitions, N, N, k);
-  benchmark_test(values, operations, heap);
+  benchmark_test(values, operations, heap, k);
 }
 
 void benchmark_hills_uniform_random(IHeap *heap, int k) {
@@ -361,7 +361,7 @@ void benchmark_hills_uniform_random(IHeap *heap, int k) {
 		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3},
 		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3}};
   std::vector<int> operations = operation_sequence(transitions, N, N, k);
-  benchmark_test(values, operations, heap);
+  benchmark_test(values, operations, heap, k);
 }
 
 void benchmark_uniform_random_sequential_decreasekey(IHeap *heap, int k) {
@@ -371,7 +371,7 @@ void benchmark_uniform_random_sequential_decreasekey(IHeap *heap, int k) {
 		                                              {0.1, 0.8, 0.1},
 		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3}};
   generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
-  benchmark_test(values, operations, heap);
+  benchmark_test(values, operations, heap, k);
 }
 
 void benchmark_less_random_sequential_operations(IHeap *heap, int k) {
@@ -381,7 +381,7 @@ void benchmark_less_random_sequential_operations(IHeap *heap, int k) {
 		                                              {0.1, 0.8, 0.1},
 		                                              {0.1, 0.1, 0.8}};
   generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
-  benchmark_test(values, operations, heap);
+  benchmark_test(values, operations, heap, k);
 }
 
 void benchmark_more_random_sequential_operations(IHeap *heap, int k) {
@@ -391,7 +391,7 @@ void benchmark_more_random_sequential_operations(IHeap *heap, int k) {
 		                                              {0.1, 0.8, 0.1},
 		                                              {0.1, 0.1, 0.8}};
   generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
-  benchmark_test(values, operations, heap);
+  benchmark_test(values, operations, heap, k);
 }
 
 void benchmark_uniform_random_one_delete(IHeap *heap, int k) {
@@ -401,7 +401,7 @@ void benchmark_uniform_random_one_delete(IHeap *heap, int k) {
 		                                              {0.495, 0.495, 0.01},
 		                                              {0.495, 0.495, 0.01}};
   generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
-  benchmark_test(values, operations, heap);
+  benchmark_test(values, operations, heap, k);
 }
 
 INSTANTIATE_TEST(benchmark_ordered_ordered);
