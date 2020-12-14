@@ -15,7 +15,6 @@
 
 // Testing
 static const int LARGE_N = 1000000;
-static const int K = 1;
 static const int MIN_VALUE = -10000;
 
 MAKE_TEST(soft_heap_tiny_epsilon, _) {
@@ -229,23 +228,100 @@ void benchmark_test(std::vector<int> values,
 	Item::dump_statistics();
 }
 
-MAKE_TEST(benchmark_ordered_values_ordered_operations, heap) {
-  return;
-	const int n = 10;
-	const int k = 1;
-	const int d = n; // num dec key
-	std::vector<int> values, operations;
-	// increasing order
-	values = value_sequence(n, 0.5);
-	// inserts -> dec key -> select k - > del min
-	// NOTE DEF IS REVERSE OF STOCHASTIC MATRIX
+void generate_test(int n, int k, double alpha,
+                  std::vector<std::vector<double>> &transitions,
+                  std::vector<int> &values,
+                  std::vector<int> &operations) {
+  values = value_sequence(n, alpha);
+  operations = operation_sequence(transitions, n, n, k);
+}
+
+
+// BENCHMARK TESTING
+const int BENCHMARK_N = 10e7;
+const std::vector<double> K_SIZES = {5, 27, 56, 3162, 20115, 10e5, 578360, 10e6, 3762874, 5*10e6};
+// O(c), lg(N), N^0.25, N^0.5, N^0.75, 0.01N, N^0.9, 0.1N, N/lg(N), 0.5N
+
+void benchmark_ordered_ordered(IHeap *heap, int k) {
+  double alpha = 0;
+  std::vector<int> values, operations;
 	std::vector<std::vector<double>> transitions = {{1 - EPSILON, EPSILON, 0},
 		                                              {0, 1 - EPSILON, EPSILON},
 		                                              {0, 0, 1}};
-	operations = operation_sequence(transitions, n, d, k);
-	for (int op : operations) {
-		std::cout << op << std::endl;
-	}
-	exit(0);
+  generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
+  benchmark_test(values, operations, heap);
+}
 
+MAKE_TEST(benchmark_ordered_ordered_0, heap) { benchmark_ordered_ordered(heap, K_SIZES[0]); }
+MAKE_TEST(benchmark_ordered_ordered_1, heap) { benchmark_ordered_ordered(heap, K_SIZES[1]); }
+MAKE_TEST(benchmark_ordered_ordered_2, heap) { benchmark_ordered_ordered(heap, K_SIZES[2]); }
+MAKE_TEST(benchmark_ordered_ordered_3, heap) { benchmark_ordered_ordered(heap, K_SIZES[3]); }
+MAKE_TEST(benchmark_ordered_ordered_4, heap) { benchmark_ordered_ordered(heap, K_SIZES[4]); }
+MAKE_TEST(benchmark_ordered_ordered_5, heap) { benchmark_ordered_ordered(heap, K_SIZES[5]); }
+MAKE_TEST(benchmark_ordered_ordered_6, heap) { benchmark_ordered_ordered(heap, K_SIZES[6]); }
+MAKE_TEST(benchmark_ordered_ordered_7, heap) { benchmark_ordered_ordered(heap, K_SIZES[7]); }
+MAKE_TEST(benchmark_ordered_ordered_8, heap) { benchmark_ordered_ordered(heap, K_SIZES[8]); }
+MAKE_TEST(benchmark_ordered_ordered_9, heap) { benchmark_ordered_ordered(heap, K_SIZES[9]); }
+
+void benchmark_reverse_ordered_ordered(IHeap *heap, int k) {
+  double alpha = 0;
+  std::vector<int> values, operations;
+	std::vector<std::vector<double>> transitions = {{1 - EPSILON, EPSILON, 0},
+		                                              {0, 1 - EPSILON, EPSILON},
+		                                              {0, 0, 1}};
+  std::reverse(values.begin(), values.end());
+  generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
+  benchmark_test(values, operations, heap);
+}
+
+MAKE_TEST(benchmark_reverse_ordered_ordered_0, heap) { benchmark_reverse_ordered_ordered(heap, K_SIZES[0]); }
+MAKE_TEST(benchmark_reverse_ordered_ordered_1, heap) { benchmark_reverse_ordered_ordered(heap, K_SIZES[1]); }
+MAKE_TEST(benchmark_reverse_ordered_ordered_2, heap) { benchmark_reverse_ordered_ordered(heap, K_SIZES[2]); }
+MAKE_TEST(benchmark_reverse_ordered_ordered_3, heap) { benchmark_reverse_ordered_ordered(heap, K_SIZES[3]); }
+MAKE_TEST(benchmark_reverse_ordered_ordered_4, heap) { benchmark_reverse_ordered_ordered(heap, K_SIZES[4]); }
+MAKE_TEST(benchmark_reverse_ordered_ordered_5, heap) { benchmark_reverse_ordered_ordered(heap, K_SIZES[5]); }
+MAKE_TEST(benchmark_reverse_ordered_ordered_6, heap) { benchmark_reverse_ordered_ordered(heap, K_SIZES[6]); }
+MAKE_TEST(benchmark_reverse_ordered_ordered_7, heap) { benchmark_reverse_ordered_ordered(heap, K_SIZES[7]); }
+MAKE_TEST(benchmark_reverse_ordered_ordered_8, heap) { benchmark_reverse_ordered_ordered(heap, K_SIZES[8]); }
+MAKE_TEST(benchmark_reverse_ordered_ordered_9, heap) { benchmark_reverse_ordered_ordered(heap, K_SIZES[9]); }
+
+void benchmark_ordered_uniform_random(IHeap *heap, int k) {
+  double alpha = 0;
+  std::vector<int> values, operations;
+	std::vector<std::vector<double>> transitions = {{1.0 / 3, 1.0 / 3, 1.0 / 3},
+		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3},
+		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3}};
+  generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
+  benchmark_test(values, operations, heap);
+}
+
+void benchmark_reverse_ordered_uniform_random(IHeap *heap, int k) {
+  double alpha = 0;
+  std::vector<int> values, operations;
+	std::vector<std::vector<double>> transitions = {{1.0 / 3, 1.0 / 3, 1.0 / 3},
+		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3},
+		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3}};
+  std::reverse(values.begin(), values.end());
+  generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
+  benchmark_test(values, operations, heap);
+}
+
+void uniform_random_ordered(IHeap *heap, int k) {
+  double alpha = 1;
+  std::vector<int> values, operations;
+	std::vector<std::vector<double>> transitions = {{1 - EPSILON, EPSILON, 0},
+		                                              {0, 1 - EPSILON, EPSILON},
+		                                              {0, 0, 1}};
+  generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
+  benchmark_test(values, operations, heap);
+}
+
+void uniform_random_uniform_random_ordered(IHeap *heap, int k) {
+  double alpha = 1;
+  std::vector<int> values, operations;
+  std::vector<std::vector<double>> transitions = {{1.0 / 3, 1.0 / 3, 1.0 / 3},
+		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3},
+		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3}};
+  generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
+  benchmark_test(values, operations, heap);
 }
