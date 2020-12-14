@@ -314,9 +314,67 @@ void benchmark_uniform_random_uniform_random_ordered(IHeap *heap, int k) {
   benchmark_test(values, operations, heap);
 }
 
+void benchmark_cliffs_uniform_random(IHeap *heap, int k) {
+  (void) heap;
+  (void) k;
+  throw TestFail("not implemented");
+}
+
+void benchmark_hills_uniform_random(IHeap *heap, int k) {
+  (void) heap;
+  (void) k;
+  throw TestFail("not implemented");
+}
+
+void benchmark_uniform_random_sequential_decreasekey(IHeap *heap, int k) {
+  double alpha = 1.0;
+  std::vector<int> values, operations;
+  std::vector<std::vector<double>> transitions = {{1.0 / 3, 1.0 / 3, 1.0 / 3},
+		                                              {0.1, 0.8, 0.1},
+		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3}};
+  generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
+  benchmark_test(values, operations, heap);
+}
+
+void benchmark_less_random_sequential_operations(IHeap *heap, int k) {
+  double alpha = 0.25;
+  std::vector<int> values, operations;
+  std::vector<std::vector<double>> transitions = {{0.8, 0.1, 0.1},
+		                                              {0.1, 0.8, 0.1},
+		                                              {0.1, 0.1, 0.8}};
+  generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
+  benchmark_test(values, operations, heap);
+}
+
+void benchmark_more_random_sequential_operations(IHeap *heap, int k) {
+  double alpha = 0.8;
+  std::vector<int> values, operations;
+  std::vector<std::vector<double>> transitions = {{0.8, 0.1, 0.1},
+		                                              {0.1, 0.8, 0.1},
+		                                              {0.1, 0.1, 0.8}};
+  generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
+  benchmark_test(values, operations, heap);
+}
+
+void benchmark_uniform_random_one_delete(IHeap *heap, int k) {
+  double alpha = 1.0;
+  std::vector<int> values, operations;
+  std::vector<std::vector<double>> transitions = {{0.495, 0.495, 0.01},
+		                                              {0.495, 0.495, 0.01},
+		                                              {0.495, 0.495, 0.01}};
+  generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
+  benchmark_test(values, operations, heap);
+}
+
 INSTANTIATE_TEST(benchmark_ordered_ordered);
 INSTANTIATE_TEST(benchmark_reverse_ordered_ordered);
 INSTANTIATE_TEST(benchmark_ordered_uniform_random);
 INSTANTIATE_TEST(benchmark_reverse_ordered_uniform_random);
 INSTANTIATE_TEST(benchmark_uniform_random_ordered);
 INSTANTIATE_TEST(benchmark_uniform_random_uniform_random_ordered);
+INSTANTIATE_TEST(benchmark_cliffs_uniform_random);
+INSTANTIATE_TEST(benchmark_hills_uniform_random);
+INSTANTIATE_TEST(benchmark_uniform_random_sequential_decreasekey);
+INSTANTIATE_TEST(benchmark_less_random_sequential_operations);
+INSTANTIATE_TEST(benchmark_more_random_sequential_operations);
+INSTANTIATE_TEST(benchmark_uniform_random_one_delete);
