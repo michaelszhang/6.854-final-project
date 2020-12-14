@@ -155,7 +155,7 @@ inline void run_all_tests() {
       fprintf(stderr, "======= Beginning test: %s/%s\n", #test_name, #heap_type); \
       try { \
         run_single_test(heap.get()); \
-      } catch (std::exception e) { \
+      } catch (std::runtime_error e) { \
         throw TestFail("terminating with uncaught exception: %s", e.what()); \
       } \
     } catch (TestFail) { \

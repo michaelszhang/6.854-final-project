@@ -158,7 +158,7 @@ MAKE_TEST(correctness_simple_delete_n_1, heap) {
 }
 
 MAKE_TEST(benchmark_delete_n, heap) {
-	SKIP_HEAP(heap, BinaryHeap);
+  SKIP_HEAP(heap, BinaryHeap);
   SKIP_HEAP(heap, HeapAdapter<MedianSelect>);
   const int n = LARGE_N;
   for (int i = 0; i < n; ++i) {
@@ -179,8 +179,7 @@ MAKE_TEST(benchmark_delete_1, heap) {
   }
   Item::dump_statistics();
   for (int i = 0; i < n; ++i) {
-    heap->delete_k(1);
-    heap->delete_min();
+    assert_delete(heap, std::vector<int>{i});
   }
   Item::dump_statistics();
 }
@@ -194,9 +193,8 @@ MAKE_TEST(benchmark_delete_2, heap) {
     heap->insert(Item(i));
   }
   Item::dump_statistics();
-  for (int i = 0; i < n-1; ++i) {
-    heap->delete_k(2);
-    heap->delete_min();
+  for (int i = 0; i < n/2; ++i) {
+    assert_delete(heap, {i*2, i*2+1});
   }
   Item::dump_statistics();
 }
@@ -232,6 +230,7 @@ void benchmark_test(std::vector<int> values,
 }
 
 MAKE_TEST(benchmark_ordered_values_ordered_operations, heap) {
+  return;
 	const int n = 10;
 	const int k = 1;
 	const int d = n; // num dec key

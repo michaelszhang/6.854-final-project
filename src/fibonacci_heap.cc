@@ -225,8 +225,6 @@ std::vector<Item> FibonacciHeap::delete_k(unsigned k)
     }
   }
 
-  //std::cout << k_result_nodes_vec.size() << std::endl;
-
   unsigned max_rank = 0;
   min_node = last_node = nullptr;
   for (auto node : k_result_nodes_vec)
@@ -242,17 +240,7 @@ std::vector<Item> FibonacciHeap::delete_k(unsigned k)
       max_rank = std::max(max_rank, c->rank);
     }
   }
-  std::cout << "ASd" << std::endl;
-  std::cout << k_result_nodes_vec.size() << std::endl;
-  for (auto node : k_result_nodes_vec) {
-    //std::cout << node->value.get_value() << std::endl;
-    delete node;
-  }
-  std::cout << "ASd" << std::endl;
   coalesce_nodes(max_rank);
-  if (min_node == nullptr) {
-    throw std::runtime_error("cri");
-  }
 
   return result;
 }
