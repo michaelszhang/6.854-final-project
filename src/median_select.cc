@@ -5,12 +5,6 @@
 #include <stdexcept>
 #include <vector>
 
-Item median_of_five(std::vector<Item>::iterator begin, std::vector<Item>::iterator end) {
-  // TODO[jerry]: optimize this
-  std::sort(begin, end, [](Item a, Item b)->bool { return a < b; });
-  return *(begin+2);
-}
-
 INode* MedianSelect::insert(const Item& item) {
   items.emplace_back(item);
   return &items.back();
@@ -49,25 +43,31 @@ std::vector<Item> MedianSelect::delete_k(unsigned k) {
     }
     return result;
   }
-  std::vector<Item> all;
-  for (const MedianSelectItem& item: items) {
-    all.push_back(item.value);
+  std::vector<ItemIterator> all;
+  for (auto it = items.begin(); it != items.end(); ++it) {
+    all.push_back(it);
   }
-  return delete_k(all, k);
+  all = select_k(all, k);
+  std::vector<Item> result;
+  for (ItemIterator it: all) {
+    result.push_back(it->value);
+    items.erase(it);
+  }
+  return result;
 }
 
 unsigned MedianSelect::size() const {
   return items.size();
 }
 
-std::vector<Item> MedianSelect::delete_k(std::vector<Item>& list, unsigned k) {
+std::vector<MedianSelect::ItemIterator> MedianSelect::select_k(std::vector<ItemIterator>& list, unsigned k) {
   if (list.size() <= 4) {
     // TODO[jerry]: optimize this
-    std::sort(list.begin(), list.end(), [](Item a, Item b)->bool { return a < b; });
-    return std::vector<Item>(list.begin(), list.begin()+k);
+    std::sort(list.begin(), list.end(), [](ItemIterator a, ItemIterator b)->bool { return a->value < b->value; });
+    return std::vector<ItemIterator>(list.begin(), list.begin()+k);
   }
 
-  std::vector<Item> group_medians;
+  std::vector<ItemIterator> group_medians;
   for (unsigned i = 0; ; i+=5) {
     if (i+5 <= list.size()) {
       group_medians.push_back(median_of_five(list.begin()+i, list.begin()+i+5));
@@ -78,25 +78,31 @@ std::vector<Item> MedianSelect::delete_k(std::vector<Item>& list, unsigned k) {
       break;
     }
   }
-  auto mid = delete_k(group_medians, (group_medians.size()+1) / 2).back();
-  std::vector<Item> smaller, larger;
-  for (Item item: list) {
-    if (item < mid) {
+  ItemIterator mid = select_k(group_medians, (group_medians.size()+1) / 2).back();
+  std::vector<ItemIterator> smaller, larger;
+  for (ItemIterator item: list) {
+    if (item->value < mid->value) {
       smaller.push_back(item);
-    } else if (mid < item) {  // TODO[jerry]: don't waste this comparison
+    } else if (mid != item) {
       larger.push_back(item);
     }
   }
   if (smaller.size()+1 > k) {
-    return delete_k(smaller, k);
+    return select_k(smaller, k);
   } else {
     smaller.push_back(mid);
     if (smaller.size() == k) {
       return smaller;
     } else {
-      std::vector<Item> more = delete_k(larger, k-smaller.size());
+      std::vector<ItemIterator> more = select_k(larger, k-smaller.size());
       smaller.insert(smaller.end(), more.begin(), more.end());
       return smaller;
     }
   }
+}
+
+MedianSelect::ItemIterator MedianSelect::median_of_five(std::vector<ItemIterator>::iterator begin, std::vector<ItemIterator>::iterator end) {
+  // TODO[jerry]: optimize this
+  std::sort(begin, end, [](ItemIterator a, ItemIterator b)->bool { return a->value < b->value; });
+  return *(begin+2);
 }

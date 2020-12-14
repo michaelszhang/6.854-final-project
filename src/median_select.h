@@ -23,7 +23,10 @@ class MedianSelect : virtual public IHeap {
         {}
     };
 
-    static std::vector<Item> delete_k(std::vector<Item>&, unsigned);
+    typedef std::list<MedianSelectItem>::iterator ItemIterator;
+
+    static std::vector<ItemIterator> select_k(std::vector<ItemIterator>&, unsigned);
+    static ItemIterator median_of_five(std::vector<ItemIterator>::iterator begin, std::vector<ItemIterator>::iterator end);
 
     std::list<MedianSelectItem> items;
 };
