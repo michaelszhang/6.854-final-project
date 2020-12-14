@@ -160,6 +160,7 @@ MAKE_TEST(correctness_simple_select_n_1, heap) {
 }
 
 MAKE_TEST(benchmark_select_n, heap) {
+  SKIP_HEAP(heap, HeapAdapter<MedianSelect>);
   const int n = LARGE_N;
   for (int i = 0; i < n; ++i) {
     heap->insert(Item(i));
@@ -171,6 +172,7 @@ MAKE_TEST(benchmark_select_n, heap) {
 
 MAKE_TEST(benchmark_select_1, heap) {
   SKIP_HEAP(heap, MedianSelect);
+  SKIP_HEAP(heap, HeapAdapter<MedianSelect>);
 
   const int n = LARGE_N;
   for (int i = 0; i < n; ++i) {
@@ -186,6 +188,7 @@ MAKE_TEST(benchmark_select_1, heap) {
 
 MAKE_TEST(benchmark_select_2, heap) {
   SKIP_HEAP(heap, MedianSelect);
+  SKIP_HEAP(heap, HeapAdapter<MedianSelect>);
 
   const int n = LARGE_N;
   for (int i = 0; i < n; ++i) {

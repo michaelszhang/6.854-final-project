@@ -139,6 +139,7 @@ inline void run_all_tests() {
 
 #define RUN_ONCE_ONLY(heap) \
   do { \
+    (void) heap; \
     static int test_has_already_run = 0; \
     if (test_has_already_run++) { \
       throw TestSkip(); \
