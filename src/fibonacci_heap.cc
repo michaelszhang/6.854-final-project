@@ -14,10 +14,7 @@ FibonacciHeap::FibonacciHeap()
 }
 
 FibonacciHeap::~FibonacciHeap() {
-  delete min_node;
-  for (unsigned i = 0; i < MAX_RANK; i++) {
-    delete rank_array[i];
-  }
+  // TBD
 }
 
 INode* FibonacciHeap::insert(const Item& item) {
@@ -214,6 +211,7 @@ FibonacciHeap::FibonacciHeapNode* FibonacciHeap::link(FibonacciHeapNode *x, Fibo
 }
 
 FibonacciHeap::FibonacciHeapNode* FibonacciHeap::propagate_link(FibonacciHeapNode *x) {
+  x->before = x->after = nullptr; // clear original links
   while (rank_array[x->rank] != nullptr) {
     int prev_rank = x->rank;
     x = link(x, rank_array[x->rank]);

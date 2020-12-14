@@ -214,7 +214,7 @@ MAKE_TEST(correctness_simple_insert_delete, heap) {
 MAKE_TEST(correctness_simple_decreasekey, heap) {
 	std::vector<INode*> nodes;
 	for (int i = 0; i < 16; ++i) {
-		nodes.push_back(heap->insert(i));
+		nodes.push_back(heap->insert(Item(i)));
 	}
 	Item::dump_statistics();
 	for (int i = 0; i < 16; ++i) {
@@ -229,7 +229,7 @@ MAKE_TEST(correctness_simple_decreasekey, heap) {
 
 MAKE_TEST(correctness_simple_select_1, heap) {
   for (int i = 0; i < 16; ++i) {
-    heap->insert(i);
+    heap->insert(Item(i));
   }
   Item::dump_statistics();
   for (int i = 0; i < 16; ++i) {
@@ -241,7 +241,7 @@ MAKE_TEST(correctness_simple_select_1, heap) {
 
 MAKE_TEST(correctness_simple_select_2, heap) {
   for (int i = 0; i < 16; ++i) {
-    heap->insert(i);
+    heap->insert(Item(i));
   }
   Item::dump_statistics();
   for (int i = 0; i < 15; ++i) {
@@ -254,7 +254,7 @@ MAKE_TEST(correctness_simple_select_2, heap) {
 
 MAKE_TEST(correctness_simple_select_n_1, heap) {
   for (int i = 0; i < 16; ++i) {
-    heap->insert(i);
+    heap->insert(Item(i));
   }
   Item::dump_statistics();
   expect_select(heap, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14});
@@ -264,7 +264,7 @@ MAKE_TEST(correctness_simple_select_n_1, heap) {
 MAKE_TEST(benchmark_select_n, heap) {
   const int n = LARGE_N;
   for (int i = 0; i < n; ++i) {
-    heap->insert(i);
+    heap->insert(Item(i));
   }
   Item::dump_statistics();
   heap->select_k(n);
@@ -276,7 +276,7 @@ MAKE_TEST(benchmark_select_1, heap) {
 
   const int n = LARGE_N;
   for (int i = 0; i < n; ++i) {
-    heap->insert(i);
+    heap->insert(Item(i));
   }
   Item::dump_statistics();
   for (int i = 0; i < n; ++i) {
@@ -291,7 +291,7 @@ MAKE_TEST(benchmark_select_2, heap) {
 
   const int n = LARGE_N;
   for (int i = 0; i < n; ++i) {
-    heap->insert(i);
+    heap->insert(Item(i));
   }
   Item::dump_statistics();
   for (int i = 0; i < n-1; ++i) {
