@@ -26,6 +26,11 @@ FibonacciHeap::~FibonacciHeap()
 INode *FibonacciHeap::insert(const Item &item)
 {
   FibonacciHeapNode *x = new FibonacciHeapNode(item);
+  if (item.get_value() == 2490) {
+    std::cout << &*x << std::endl;
+    //delete x;
+    //exit(0);
+  }
   maintain_min(x);
   push_tree(x);
   heap_size++;
@@ -178,6 +183,11 @@ std::vector<Item> FibonacciHeap::delete_k(unsigned k)
     FibonacciHeapNode *node = todo.back();
     todo.pop_back();
     result.push_back(node->value);
+    if (node->value.get_value() == 2490) {
+      //delete node;
+      std::cout << "BVASd"<< std::endl;
+      std::cout << &*node << std::endl;
+    }
     result_nodes.push_back(node);
     contents[&node->value] = node;
     SoftHeap::CorruptionList corrupted = q.insert(node->value);
@@ -194,11 +204,11 @@ std::vector<Item> FibonacciHeap::delete_k(unsigned k)
   {
     throw std::runtime_error("corrupted after first insert!?");
   }
-  for (unsigned i = 1; i <= k; ++i)
-  {
+  int min_cnt = 0;
+  for (unsigned i = 1; i <= k; ++i) {
     const SoftHeapEntry &min = q.find_min();
-    if (!min.corrupted)
-    {
+    if (!min.corrupted) {
+      min_cnt ++;
       update_todo(&min.item);
     }
     SoftHeap::CorruptionList corrupted = q.delete_min();
@@ -211,7 +221,9 @@ std::vector<Item> FibonacciHeap::delete_k(unsigned k)
       push_item();
     }
   }
-
+  std::cout << min_cnt << std::endl;
+  std::cout << result.size() << std::endl;
+/*
   MedianSelect med_sel;
   for (auto item : result)
   {
@@ -227,7 +239,15 @@ std::vector<Item> FibonacciHeap::delete_k(unsigned k)
       mx = item;
   }
   assert(!(result.back() < mx));
-  // ===
+  // ===*/
+  // TODO[jerry]: do this better
+  std::sort(result.begin(), result.end());
+  while (result.size() > k)
+    result.pop_back();
+  std::unordered_set<int> tmp2;
+  for (Item item : result)
+    tmp2.insert(item.get_value());
+  std::cout << "TMP@ " << tmp2.size() << std::endl;
 
   std::unordered_set<FibonacciHeapNode *> k_result_nodes;
   std::vector<FibonacciHeapNode *> k_result_nodes_vec;
@@ -256,6 +276,19 @@ std::vector<Item> FibonacciHeap::delete_k(unsigned k)
     }
   }
   coalesce_nodes(max_rank);
+  std::cout << "ASd" << std::endl;
+  std::unordered_set<int> tmp;
+
+  for (auto node : k_result_nodes_vec) {
+    tmp.insert(node->value.get_value());
+    //std::cout << (*k_result_nodes.find(node))->value.get_value() << std::endl;
+    delete node;
+    if (node->value.get_value() == 2490) {
+      std::cout << &*node << std::endl;
+    }
+    //std::cout << (*k_result_nodes.find(node))->value.get_value() << std::endl;
+  }
+  std::cout << tmp.size() << std::endl;
 
   return result;
 }
