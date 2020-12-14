@@ -122,7 +122,6 @@ inline void run_all_tests() {
         DRIVE_TEST(test_name, MedianSelect); \
         DRIVE_TEST(test_name, HeapAdapter<BinaryHeap>); \
         DRIVE_TEST(test_name, HeapAdapter<FibonacciHeap>); \
-        DRIVE_TEST(test_name, HeapAdapter<MedianSelect>); \
       } \
       void run_single_test(IHeap* heap) override; \
   }; \

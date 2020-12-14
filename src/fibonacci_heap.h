@@ -44,7 +44,7 @@ class FibonacciHeap : virtual public IHeap {
     void add_child(FibonacciHeapNode *x, FibonacciHeapNode *y);
     FibonacciHeapNode* link(FibonacciHeapNode *x, FibonacciHeapNode *y);
     FibonacciHeapNode* propagate_link(FibonacciHeapNode *x);
-    void coalesce_nodes(int max_rank);
+    void coalesce_nodes(unsigned max_rank);
     void cut(FibonacciHeapNode *x);
     void maintain_min(FibonacciHeapNode *x);
     void push_tree(FibonacciHeapNode *x);

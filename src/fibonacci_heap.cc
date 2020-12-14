@@ -120,7 +120,7 @@ std::vector<Item> FibonacciHeap::delete_k(unsigned k)
     {
       for (unsigned idx = i;;)
       {
-        unsigned l = (idx * 2 + 1), r = (idx * 2 + 2);
+        int l = (idx * 2 + 1), r = (idx * 2 + 2);
         Item vl = (l < rank) ? nodes[l]->value : Item();
         Item vr = (r < rank) ? nodes[r]->value : Item();
         if (l < rank)
@@ -153,7 +153,7 @@ std::vector<Item> FibonacciHeap::delete_k(unsigned k)
     }
     for (int i = rank / 2 - 1; i >= 0; i--)
     {
-      unsigned l = (i * 2 + 1), r = (i * 2 + 2);
+      int l = (i * 2 + 1), r = (i * 2 + 2);
       nodes[i]->left = nodes[l];
       if (r < rank)
       {
@@ -333,7 +333,7 @@ FibonacciHeap::FibonacciHeapNode *FibonacciHeap::propagate_link(FibonacciHeapNod
   return x;
 }
 
-void FibonacciHeap::coalesce_nodes(int max_rank)
+void FibonacciHeap::coalesce_nodes(unsigned max_rank)
 {
   for (unsigned i = 0; i <= max_rank; i++)
   {

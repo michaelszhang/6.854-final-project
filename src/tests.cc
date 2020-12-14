@@ -157,8 +157,6 @@ MAKE_TEST(correctness_simple_delete_n_1, heap) {
 }
 
 MAKE_TEST(benchmark_delete_n, heap) {
-  SKIP_HEAP(heap, BinaryHeap);
-  SKIP_HEAP(heap, HeapAdapter<MedianSelect>);
   const int n = LARGE_N;
   for (int i = 0; i < n; ++i) {
     heap->insert(Item(i));
@@ -170,7 +168,6 @@ MAKE_TEST(benchmark_delete_n, heap) {
 
 MAKE_TEST(benchmark_delete_1, heap) {
   SKIP_HEAP(heap, MedianSelect);
-  SKIP_HEAP(heap, HeapAdapter<MedianSelect>);
 
   const int n = LARGE_N;
   for (int i = 0; i < n; ++i) {
@@ -185,7 +182,6 @@ MAKE_TEST(benchmark_delete_1, heap) {
 
 MAKE_TEST(benchmark_delete_2, heap) {
   SKIP_HEAP(heap, MedianSelect);
-  SKIP_HEAP(heap, HeapAdapter<MedianSelect>);
 
   const int n = LARGE_N;
   for (int i = 0; i < n; ++i) {
@@ -197,6 +193,10 @@ MAKE_TEST(benchmark_delete_2, heap) {
   }
   Item::dump_statistics();
 }
+
+///////////////////////////////////
+// BEGIN FULL BENCHMARKING TESTS //
+///////////////////////////////////
 
 void benchmark_test(std::vector<int> values,
 										std::vector<int> operations,
@@ -236,11 +236,21 @@ void generate_test(int n, int k, double alpha,
   operations = operation_sequence(transitions, n, n, k);
 }
 
-
-// BENCHMARK TESTING
-const int BENCHMARK_N = 10e7;
-const std::vector<double> K_SIZES = {5, 27, 56, 3162, 20115, 10e5, 578360, 10e6, 3762874, 5*10e6};
+const int BENCHMARK_N = 10'000'000;
+const std::vector<int> K_SIZES = {5, 27, 56, 3162, 20115, 100'000, 578360, 1'000'000, 3762874, 5'000'000};
 // O(c), lg(N), N^0.25, N^0.5, N^0.75, 0.01N, N^0.9, 0.1N, N/lg(N), 0.5N
+
+#define INSTANTIATE_TEST(test_name) \
+  MAKE_TEST(test_name##_0, heap) { test_name(heap, K_SIZES[0]); } \
+  MAKE_TEST(test_name##_1, heap) { test_name(heap, K_SIZES[1]); } \
+  MAKE_TEST(test_name##_2, heap) { test_name(heap, K_SIZES[2]); } \
+  MAKE_TEST(test_name##_3, heap) { test_name(heap, K_SIZES[3]); } \
+  MAKE_TEST(test_name##_4, heap) { test_name(heap, K_SIZES[4]); } \
+  MAKE_TEST(test_name##_5, heap) { test_name(heap, K_SIZES[5]); } \
+  MAKE_TEST(test_name##_6, heap) { test_name(heap, K_SIZES[6]); } \
+  MAKE_TEST(test_name##_7, heap) { test_name(heap, K_SIZES[7]); } \
+  MAKE_TEST(test_name##_8, heap) { test_name(heap, K_SIZES[8]); } \
+  MAKE_TEST(test_name##_9, heap) { test_name(heap, K_SIZES[9]); }
 
 void benchmark_ordered_ordered(IHeap *heap, int k) {
   double alpha = 0;
@@ -252,17 +262,6 @@ void benchmark_ordered_ordered(IHeap *heap, int k) {
   benchmark_test(values, operations, heap);
 }
 
-MAKE_TEST(benchmark_ordered_ordered_0, heap) { benchmark_ordered_ordered(heap, K_SIZES[0]); }
-MAKE_TEST(benchmark_ordered_ordered_1, heap) { benchmark_ordered_ordered(heap, K_SIZES[1]); }
-MAKE_TEST(benchmark_ordered_ordered_2, heap) { benchmark_ordered_ordered(heap, K_SIZES[2]); }
-MAKE_TEST(benchmark_ordered_ordered_3, heap) { benchmark_ordered_ordered(heap, K_SIZES[3]); }
-MAKE_TEST(benchmark_ordered_ordered_4, heap) { benchmark_ordered_ordered(heap, K_SIZES[4]); }
-MAKE_TEST(benchmark_ordered_ordered_5, heap) { benchmark_ordered_ordered(heap, K_SIZES[5]); }
-MAKE_TEST(benchmark_ordered_ordered_6, heap) { benchmark_ordered_ordered(heap, K_SIZES[6]); }
-MAKE_TEST(benchmark_ordered_ordered_7, heap) { benchmark_ordered_ordered(heap, K_SIZES[7]); }
-MAKE_TEST(benchmark_ordered_ordered_8, heap) { benchmark_ordered_ordered(heap, K_SIZES[8]); }
-MAKE_TEST(benchmark_ordered_ordered_9, heap) { benchmark_ordered_ordered(heap, K_SIZES[9]); }
-
 void benchmark_reverse_ordered_ordered(IHeap *heap, int k) {
   double alpha = 0;
   std::vector<int> values, operations;
@@ -273,17 +272,6 @@ void benchmark_reverse_ordered_ordered(IHeap *heap, int k) {
   generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
   benchmark_test(values, operations, heap);
 }
-
-MAKE_TEST(benchmark_reverse_ordered_ordered_0, heap) { benchmark_reverse_ordered_ordered(heap, K_SIZES[0]); }
-MAKE_TEST(benchmark_reverse_ordered_ordered_1, heap) { benchmark_reverse_ordered_ordered(heap, K_SIZES[1]); }
-MAKE_TEST(benchmark_reverse_ordered_ordered_2, heap) { benchmark_reverse_ordered_ordered(heap, K_SIZES[2]); }
-MAKE_TEST(benchmark_reverse_ordered_ordered_3, heap) { benchmark_reverse_ordered_ordered(heap, K_SIZES[3]); }
-MAKE_TEST(benchmark_reverse_ordered_ordered_4, heap) { benchmark_reverse_ordered_ordered(heap, K_SIZES[4]); }
-MAKE_TEST(benchmark_reverse_ordered_ordered_5, heap) { benchmark_reverse_ordered_ordered(heap, K_SIZES[5]); }
-MAKE_TEST(benchmark_reverse_ordered_ordered_6, heap) { benchmark_reverse_ordered_ordered(heap, K_SIZES[6]); }
-MAKE_TEST(benchmark_reverse_ordered_ordered_7, heap) { benchmark_reverse_ordered_ordered(heap, K_SIZES[7]); }
-MAKE_TEST(benchmark_reverse_ordered_ordered_8, heap) { benchmark_reverse_ordered_ordered(heap, K_SIZES[8]); }
-MAKE_TEST(benchmark_reverse_ordered_ordered_9, heap) { benchmark_reverse_ordered_ordered(heap, K_SIZES[9]); }
 
 void benchmark_ordered_uniform_random(IHeap *heap, int k) {
   double alpha = 0;
@@ -306,7 +294,7 @@ void benchmark_reverse_ordered_uniform_random(IHeap *heap, int k) {
   benchmark_test(values, operations, heap);
 }
 
-void uniform_random_ordered(IHeap *heap, int k) {
+void benchmark_uniform_random_ordered(IHeap *heap, int k) {
   double alpha = 1;
   std::vector<int> values, operations;
 	std::vector<std::vector<double>> transitions = {{1 - EPSILON, EPSILON, 0},
@@ -316,7 +304,7 @@ void uniform_random_ordered(IHeap *heap, int k) {
   benchmark_test(values, operations, heap);
 }
 
-void uniform_random_uniform_random_ordered(IHeap *heap, int k) {
+void benchmark_uniform_random_uniform_random_ordered(IHeap *heap, int k) {
   double alpha = 1;
   std::vector<int> values, operations;
   std::vector<std::vector<double>> transitions = {{1.0 / 3, 1.0 / 3, 1.0 / 3},
@@ -325,3 +313,10 @@ void uniform_random_uniform_random_ordered(IHeap *heap, int k) {
   generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
   benchmark_test(values, operations, heap);
 }
+
+INSTANTIATE_TEST(benchmark_ordered_ordered);
+INSTANTIATE_TEST(benchmark_reverse_ordered_ordered);
+INSTANTIATE_TEST(benchmark_ordered_uniform_random);
+INSTANTIATE_TEST(benchmark_reverse_ordered_uniform_random);
+INSTANTIATE_TEST(benchmark_uniform_random_ordered);
+INSTANTIATE_TEST(benchmark_uniform_random_uniform_random_ordered);

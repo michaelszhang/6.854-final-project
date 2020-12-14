@@ -1,5 +1,7 @@
 #include "item.h"
 
+#include <inttypes.h>
+#include <stdint.h>
 #include <stdio.h>
 
 Item::Item(int value)
@@ -16,11 +18,11 @@ bool Item::operator<(const Item& other) const {
 }
 
 void Item::dump_statistics() {
-  printf("Number of comparisons: %d\n", n_comparisons);
+  printf("Number of comparisons: %" PRId64 "\n", n_comparisons);
 }
 
 void Item::reset_statistics() {
   n_comparisons = 0;
 }
 
-int Item::n_comparisons = 0;
+int64_t Item::n_comparisons = 0;

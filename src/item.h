@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <limits>
+#include <stdint.h>
 
 class Item {
   public:
@@ -15,7 +16,7 @@ class Item {
     static void reset_statistics();
 
   private:
-    static int n_comparisons;
+    static int64_t n_comparisons;
     int value;
 };
 
