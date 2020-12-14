@@ -1,4 +1,5 @@
 #include "tests.h"
+#include "tests_generation.h"
 
 #include <list>
 #include <vector>
@@ -11,103 +12,6 @@
 #include "item.h"
 #include "median_select.h"
 #include "soft_heap.h"
-
-// Generators
-double randomUniform() {
-	return (double)rand() / RAND_MAX;
-}
-
-std::vector<int> value_sequence(int n, double alpha) {
-	// Generate sequence and perform Fischer-Yates Shuffle
-	// alpha controls how shuffled sequence is
-	// i.e. alpha = 0 means in order while 1 produces an unbiased permuation
-	std::vector<int> v;
-	for (int i = 0; i < n; i++) {
-		v.push_back(i);
-	}
-	for (int i = 0; i < n - 1; i++) {
-		if (randomUniform() < alpha) {
-			int j = i + rand() % (n - i);
-			std::swap(v[i], v[j]);
-		}
-	}
-	return v;
-}
-
-// Operation Sampling via Modified Random Walk
-int next_state(int *operations_left, std::vector<double> &pdf) {
-	double sum = 0;
-	std::vector<double> cdf;
-	std::vector<int> sample_space;
-	for (int i = 0; i < pdf.size(); i++) {
-		if (operations_left[i] > 0) {
-			sum += pdf[i];
-			cdf.push_back(sum);
-			sample_space.push_back(i);
-		}
-	}
-	if (sum == 0) {
-		return -1;
-	}
-	double r = randomUniform() * sum;
-	for (int i = 0; i < cdf.size() - 1; i++) {
-		if (r < cdf[i]) {
-			return sample_space[i];
-		}
-	}
-	return sample_space[cdf.size() - 1];
-}
-
-std::vector<int> operation_sequence(std::vector<std::vector<double> > &transitions, int n0, int n1, int k) {
-	// transitions contain the PDFs of the chain matrix
-	// 0, 1, 2, 3 are insert, dec key, del min, select k
-	int operations_left[4] = {n0, n1, 0, 0};
-	int cur_state = 0;
-	int heap_size = 0;
-	std::vector<int> v;
-	while (cur_state != -1 && (operations_left[0] + operations_left[2]) > 0) {
-		v.push_back(cur_state);
-		operations_left[cur_state]--;
-		if (cur_state == 0) {
-			heap_size++;
-			operations_left[3] += (heap_size % k == 0);
-			operations_left[2]++;
-		} else if (cur_state == 2) {
-			operations_left[3] -= (heap_size % k == 0);
-			heap_size--;
-		}
-		cur_state = next_state(operations_left, transitions[cur_state]);
-	}
-	return v;
-}
-
-// DecreaseKeySampler
-class DecreaseKeySampler {
-public:
-	void add(INode* n) {
-		time_inserted[n] = time;
-		distribution[time] = n;
-		time++;
-	}
-
-	void remove(INode* n) {
-		int t = time_inserted[n];
-		time_inserted.erase(n);
-		distribution.erase(t);
-	}
-
-	INode* sampleUniformTime() {
-		int start = distribution.begin()->first;
-		int end = distribution.rbegin()->first;
-		double t = (start + randomUniform() * (end - start + 1) - 1);
-		return distribution.lower_bound(t)->second;
-	}
-
-private:
-	std::map<INode*, double> time_inserted;
-	std::map<double, INode*> distribution;
-	int time = 0;
-};
 
 // Testing
 static const int LARGE_N = 1000000;
@@ -297,42 +201,6 @@ MAKE_TEST(benchmark_select_2, heap) {
   }
   Item::dump_statistics();
 }
-
-/*
-   MAKE_TEST(benchmark_delete_n, heap) {
-   const int n = LARGE_N;
-   for (int i = 0; i < n; ++i) {
-    heap->insert(i);
-   }
-   Item::dump_statistics();
-   heap->delete_k(n);
-   Item::dump_statistics();
-   }
-
-   MAKE_TEST(benchmark_delete_1, heap) {
-   const int n = LARGE_N;
-   for (int i = 0; i < n; ++i) {
-    heap->insert(i);
-   }
-   Item::dump_statistics();
-   for (int i = 0; i < n; ++i) {
-    heap->delete_k(1);
-   }
-   Item::dump_statistics();
-   }
-
-   MAKE_TEST(benchmark_delete_2, heap) {
-   const int n = LARGE_N;
-   for (int i = 0; i < n; ++i) {
-    heap->insert(i);
-   }
-   Item::dump_statistics();
-   for (int i = 0; i < n/2; ++i) {
-    heap->delete_k(2);
-   }
-   Item::dump_statistics();
-   }*/
-
 MAKE_TEST(benchmark_ordered_values_ordered_operations_uniform_deckey, heap) {
 	const int n = 100;
 	const int k = 3;
