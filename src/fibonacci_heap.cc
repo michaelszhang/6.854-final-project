@@ -50,8 +50,6 @@ void FibonacciHeap::decrease_key(INode* node, const Item& item) {
   }
 }
 
-int cnt = 0;
-
 Item FibonacciHeap::delete_min() {
   if (size() == 0) {
     throw std::runtime_error("Delete from empty tree");
@@ -179,6 +177,14 @@ std::vector<Item> FibonacciHeap::select_k(unsigned k) {
       push_item();
     }
   }
+  
+  // consolidate tree to release potenial
+  root->child = nullptr; // (root used here is different than above)
+  min_node = root;
+  push_tree(root);
+  heap_size++;
+  delete_min();
+
   // TODO[jerry]: do this better
   std::sort(result.begin(), result.end());
   while (result.size() > k) result.pop_back();
