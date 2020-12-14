@@ -240,17 +240,31 @@ const int BENCHMARK_N = 10'000'000;
 const std::vector<int> K_SIZES = {5, 27, 56, 3162, 20115, 100'000, 578360, 1'000'000, 3762874, 5'000'000};
 // O(c), lg(N), N^0.25, N^0.5, N^0.75, 0.01N, N^0.9, 0.1N, N/lg(N), 0.5N
 
+
+// Don't run tests that are O(n^2) time complexity and won't terminate in a sane amount of time
+#define BENCHMARK_TEST_GUARD_K(test_name, kidx) \
+  MAKE_TEST(test_name##kidx, heap) { \
+    if (kidx < 5) { \
+      SKIP_HEAP(heap, MedianSelect); \
+    } \
+    /*if (kidx >= 5) { \
+      SKIP_HEAP(HeapAdapter<BinaryHeap>); \
+      SKIP_HEAP(HeapAdapter<FibonacciHeap>); \
+    } */ \
+    test_name(heap, K_SIZES[kidx]); \
+  }
+
 #define INSTANTIATE_TEST(test_name) \
-  MAKE_TEST(test_name##_0, heap) { test_name(heap, K_SIZES[0]); } \
-  MAKE_TEST(test_name##_1, heap) { test_name(heap, K_SIZES[1]); } \
-  MAKE_TEST(test_name##_2, heap) { test_name(heap, K_SIZES[2]); } \
-  MAKE_TEST(test_name##_3, heap) { test_name(heap, K_SIZES[3]); } \
-  MAKE_TEST(test_name##_4, heap) { test_name(heap, K_SIZES[4]); } \
-  MAKE_TEST(test_name##_5, heap) { test_name(heap, K_SIZES[5]); } \
-  MAKE_TEST(test_name##_6, heap) { test_name(heap, K_SIZES[6]); } \
-  MAKE_TEST(test_name##_7, heap) { test_name(heap, K_SIZES[7]); } \
-  MAKE_TEST(test_name##_8, heap) { test_name(heap, K_SIZES[8]); } \
-  MAKE_TEST(test_name##_9, heap) { test_name(heap, K_SIZES[9]); }
+  BENCHMARK_TEST_GUARD_K(test_name, 0) \
+  BENCHMARK_TEST_GUARD_K(test_name, 1) \
+  BENCHMARK_TEST_GUARD_K(test_name, 2) \
+  BENCHMARK_TEST_GUARD_K(test_name, 3) \
+  BENCHMARK_TEST_GUARD_K(test_name, 4) \
+  BENCHMARK_TEST_GUARD_K(test_name, 5) \
+  BENCHMARK_TEST_GUARD_K(test_name, 6) \
+  BENCHMARK_TEST_GUARD_K(test_name, 7) \
+  BENCHMARK_TEST_GUARD_K(test_name, 8) \
+  BENCHMARK_TEST_GUARD_K(test_name, 9) \
 
 void benchmark_ordered_ordered(IHeap *heap, int k) {
   double alpha = 0;
