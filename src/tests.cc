@@ -116,7 +116,6 @@ static const int K = 1;
 MAKE_TEST(soft_heap_tiny_epsilon, _) {
   SKIP_HEAP(_, BinaryHeap);
   SKIP_HEAP(_, FibonacciHeap);
-	SKIP_HEAP(_, MedianSelect);
 
   SoftHeap heap(0.001);
   std::list<Item> stuff; // prevent deallocation of temporaries
@@ -140,7 +139,6 @@ MAKE_TEST(soft_heap_tiny_epsilon, _) {
 MAKE_TEST(soft_heap_corruption_small, _) {
   SKIP_HEAP(_, BinaryHeap);
   SKIP_HEAP(_, FibonacciHeap);
-	SKIP_HEAP(_, MedianSelect);
 
   SoftHeap heap(0.5);
   std::list<Item> stuff; // prevent deallocation of temporaries
@@ -162,7 +160,6 @@ MAKE_TEST(soft_heap_corruption_small, _) {
 MAKE_TEST(soft_heap_corruption_larger, _) {
   SKIP_HEAP(_, BinaryHeap);
   SKIP_HEAP(_, FibonacciHeap);
-	SKIP_HEAP(_, MedianSelect);
 
   SoftHeap heap(0.5);
   std::list<Item> stuff;

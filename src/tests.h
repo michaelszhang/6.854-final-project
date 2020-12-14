@@ -13,6 +13,7 @@
 #include "binary_heap.h"
 #include "fibonacci_heap.h"
 #include "heap.h"
+#include "heap_adapter.h"
 #include "item.h"
 #include "median_select.h"
 
@@ -42,6 +43,21 @@ class TestFixture {
       return registrar;
     }
 
+    static int& passed_tests() {
+      static int count;
+      return count;
+    }
+
+    static int& skipped_tests() {
+      static int count;
+      return count;
+    }
+
+    static int& failed_tests() {
+      static int count;
+      return count;
+    }
+
   protected:
     TestFixture() {
       test_registrar().push_back(std::bind(&TestFixture::run_testlib, this));
@@ -65,7 +81,7 @@ class TestFixture {
     void assert_delete(IHeap* heap, int value) {
       int result = heap->delete_min().get_value();
       if (result != value) {
-        throw TestFail("expected to delete %d, not %d\n", value, result);
+        throw TestFail("expected to delete %d, not %d", value, result);
       }
     }
 
@@ -91,6 +107,11 @@ inline void run_all_tests() {
   for (const auto& test: TestFixture::test_registrar()) {
     test();
   }
+  fprintf(stderr, "Found %d tests: %d passed, %d skipped, %d failed.\n",
+      TestFixture::passed_tests() + TestFixture::skipped_tests() + TestFixture::failed_tests(),
+      TestFixture::passed_tests(),
+      TestFixture::skipped_tests(),
+      TestFixture::failed_tests());
 }
 
 #define MAKE_TEST(test_name, heap) \
@@ -100,6 +121,9 @@ inline void run_all_tests() {
         DRIVE_TEST(test_name, BinaryHeap); \
         DRIVE_TEST(test_name, FibonacciHeap); \
         DRIVE_TEST(test_name, MedianSelect); \
+        DRIVE_TEST(test_name, HeapAdapter<BinaryHeap>); \
+        DRIVE_TEST(test_name, HeapAdapter<FibonacciHeap>); \
+        DRIVE_TEST(test_name, HeapAdapter<MedianSelect>); \
       } \
       void run_single_test(IHeap* heap) override; \
   }; \
@@ -125,11 +149,15 @@ inline void run_all_tests() {
       fprintf(stderr, ">>>>>>> Aborting test\n"); \
     } catch (TestSkip) { \
       fprintf(stderr, "======= Skipping test: %s/%s\n\n", #test_name, #heap_type); \
+      skipped_tests() += 1; \
+      break; \
     } \
     if (TestFail::has_failed()) { \
       fprintf(stderr, "======= Failing test: %s/%s\n\n", #test_name, #heap_type); \
+      failed_tests() += 1; \
     } else { \
       fprintf(stderr, "======= Ending test: %s/%s\n\n", #test_name, #heap_type); \
+      passed_tests() += 1; \
     } \
   } while (0)
 
