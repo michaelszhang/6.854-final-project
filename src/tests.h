@@ -152,7 +152,11 @@ inline void run_all_tests() {
     std::unique_ptr<IHeap> heap(new heap_type()); \
     try { \
       fprintf(stderr, "======= Beginning test: %s/%s\n", #test_name, #heap_type); \
-      run_single_test(heap.get()); \
+      try { \
+        run_single_test(heap.get()); \
+      } catch (std::exception e) { \
+        throw TestFail("terminating with uncaught exception: %s", e.what()); \
+      } \
     } catch (TestFail) { \
       fprintf(stderr, ">>>>>>> Aborting test\n"); \
     } catch (TestSkip) { \
