@@ -71,7 +71,6 @@ Item FibonacciHeap::delete_min() {
   while (x != nullptr) {
     FibonacciHeapNode *y = x;
     x = x->after;
-    y->before = y->after = nullptr;
     y = propagate_link(y);
     max_rank = std::max(max_rank, y->rank);
   }
@@ -177,7 +176,7 @@ std::vector<Item> FibonacciHeap::select_k(unsigned k) {
       push_item();
     }
   }
-  
+
   // consolidate tree to release potenial
   root->child = nullptr; // (root used here is different than above)
   min_node = root;
@@ -188,6 +187,19 @@ std::vector<Item> FibonacciHeap::select_k(unsigned k) {
   // TODO[jerry]: do this better
   std::sort(result.begin(), result.end());
   while (result.size() > k) result.pop_back();
+  /*
+  // ======================
+  vector<FibonacciHeapNode*> result_nodes;
+  for (item: results) {
+    result_nodes.push_back(contents[item]);
+  }
+  for (node : result_nodes) {
+    FibonacciHeapNode* child = node->child;
+
+  }
+  */
+  // ======================
+
   return result;
 }
 
@@ -217,7 +229,7 @@ FibonacciHeap::FibonacciHeapNode* FibonacciHeap::link(FibonacciHeapNode *x, Fibo
 }
 
 FibonacciHeap::FibonacciHeapNode* FibonacciHeap::propagate_link(FibonacciHeapNode *x) {
-  x->before = x->after = nullptr; // clear original links
+  x->parent = x->before = x->after = nullptr;  // clear original links
   while (rank_array[x->rank] != nullptr) {
     int prev_rank = x->rank;
     x = link(x, rank_array[x->rank]);
