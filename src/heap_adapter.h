@@ -18,8 +18,7 @@ class HeapAdapter : virtual public IHeap {
     void decrease_key(INode* node, const Item& item) override { heap->decrease_key(node, item); }
     Item delete_min() override { return heap->delete_min(); }
 
-    std::vector<Item> select_k(unsigned k) override {
-      // This is actually delete_k, but not renaming yet for fear of version control conflict
+    std::vector<Item> delete_k(unsigned k) override {
       std::vector<Item> result;
       for (unsigned i = 0; i < k; ++i) {
         result.push_back(delete_min());

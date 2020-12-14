@@ -14,7 +14,7 @@ class FibonacciHeap : virtual public IHeap {
     INode* insert(const Item&) override;
     void decrease_key(INode*, const Item&) override;
     Item delete_min() override;
-    std::vector<Item> select_k(unsigned k) override;
+    std::vector<Item> delete_k(unsigned k) override;
 
     unsigned size() const override;
 

@@ -125,52 +125,49 @@ MAKE_TEST(correctness_simple_decreasekey, heap) {
 	Item::dump_statistics();
 }
 
-MAKE_TEST(correctness_simple_select_1, heap) {
+MAKE_TEST(correctness_simple_delete_1, heap) {
   for (int i = 0; i < 16; ++i) {
     heap->insert(Item(i));
   }
   Item::dump_statistics();
   for (int i = 0; i < 16; ++i) {
-    expect_select(heap, std::vector<int>{i});
-    expect_delete(heap, i);
+    expect_delete(heap, std::vector<int>{i});
   }
   Item::dump_statistics();
 }
 
-MAKE_TEST(correctness_simple_select_2, heap) {
+MAKE_TEST(correctness_simple_delete_2, heap) {
   for (int i = 0; i < 16; ++i) {
     heap->insert(Item(i));
   }
   Item::dump_statistics();
-  for (int i = 0; i < 15; ++i) {
-    expect_select(heap, {i, i+1});
-    expect_delete(heap, i);
+  for (int i = 0; i < 8; ++i) {
+    expect_delete(heap, {2*i, 2*i+1});
   }
-  expect_delete(heap, 15);
   Item::dump_statistics();
 }
 
-MAKE_TEST(correctness_simple_select_n_1, heap) {
+MAKE_TEST(correctness_simple_delete_n_1, heap) {
   for (int i = 0; i < 16; ++i) {
     heap->insert(Item(i));
   }
   Item::dump_statistics();
-  expect_select(heap, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14});
+  expect_delete(heap, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14});
   Item::dump_statistics();
 }
 
-MAKE_TEST(benchmark_select_n, heap) {
+MAKE_TEST(benchmark_delete_n, heap) {
   SKIP_HEAP(heap, HeapAdapter<MedianSelect>);
   const int n = LARGE_N;
   for (int i = 0; i < n; ++i) {
     heap->insert(Item(i));
   }
   Item::dump_statistics();
-  heap->select_k(n);
+  heap->delete_k(n);
   Item::dump_statistics();
 }
 
-MAKE_TEST(benchmark_select_1, heap) {
+MAKE_TEST(benchmark_delete_1, heap) {
   SKIP_HEAP(heap, MedianSelect);
   SKIP_HEAP(heap, HeapAdapter<MedianSelect>);
 
@@ -180,13 +177,13 @@ MAKE_TEST(benchmark_select_1, heap) {
   }
   Item::dump_statistics();
   for (int i = 0; i < n; ++i) {
-    heap->select_k(1);
+    heap->delete_k(1);
     heap->delete_min();
   }
   Item::dump_statistics();
 }
 
-MAKE_TEST(benchmark_select_2, heap) {
+MAKE_TEST(benchmark_delete_2, heap) {
   SKIP_HEAP(heap, MedianSelect);
   SKIP_HEAP(heap, HeapAdapter<MedianSelect>);
 
@@ -196,7 +193,7 @@ MAKE_TEST(benchmark_select_2, heap) {
   }
   Item::dump_statistics();
   for (int i = 0; i < n-1; ++i) {
-    heap->select_k(2);
+    heap->delete_k(2);
     heap->delete_min();
   }
   Item::dump_statistics();

@@ -83,7 +83,7 @@ Item BinaryHeap::delete_min() {
   return result;
 }
 
-std::vector<Item> BinaryHeap::select_k(unsigned k) {
+std::vector<Item> BinaryHeap::delete_k(unsigned k) {
   std::vector<Item> result;
   std::unordered_map<const Item*, unsigned> contents;
   std::vector<unsigned> todo;
