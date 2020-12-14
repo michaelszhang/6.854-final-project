@@ -137,6 +137,14 @@ inline void run_all_tests() {
     } \
   } while (0)
 
+#define RUN_ONCE_ONLY(heap) \
+  do { \
+    static int test_has_already_run = 0; \
+    if (test_has_already_run++) { \
+      throw TestSkip(); \
+    } \
+  } while (0)
+
 #define DRIVE_TEST(test_name, heap_type) \
   do { \
     Item::reset_statistics(); \
