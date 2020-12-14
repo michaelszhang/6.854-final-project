@@ -118,7 +118,6 @@ inline void run_all_tests() {
   class Testlib_##test_name : protected TestFixture { \
     public: \
       void run_testlib() override { \
-        DRIVE_TEST(test_name, BinaryHeap); \
         DRIVE_TEST(test_name, FibonacciHeap); \
         DRIVE_TEST(test_name, MedianSelect); \
         DRIVE_TEST(test_name, HeapAdapter<BinaryHeap>); \

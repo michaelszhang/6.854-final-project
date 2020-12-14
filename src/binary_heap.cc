@@ -83,7 +83,21 @@ Item BinaryHeap::delete_min() {
   return result;
 }
 
-std::vector<Item> BinaryHeap::delete_k(unsigned k) {
+std::vector<Item> BinaryHeap::delete_k(unsigned) {
+  throw std::runtime_error("not implemented");
+}
+
+unsigned BinaryHeap::size() const {
+  return nodes.size();
+}
+
+void BinaryHeap::swap_idx(unsigned i1, unsigned i2) {
+  std::swap(nodes[i1], nodes[i2]);
+  nodes[i1]->idx = i1;
+  nodes[i2]->idx = i2;
+}
+
+std::vector<Item> BinaryHeap::select_k(unsigned k) {
   std::vector<Item> result;
   std::unordered_map<const Item*, unsigned> contents;
   std::vector<unsigned> todo;
@@ -130,14 +144,4 @@ std::vector<Item> BinaryHeap::delete_k(unsigned k) {
   std::sort(result.begin(), result.end());
   while (result.size() > k) result.pop_back();
   return result;
-}
-
-unsigned BinaryHeap::size() const {
-  return nodes.size();
-}
-
-void BinaryHeap::swap_idx(unsigned i1, unsigned i2) {
-  std::swap(nodes[i1], nodes[i2]);
-  nodes[i1]->idx = i1;
-  nodes[i2]->idx = i2;
 }

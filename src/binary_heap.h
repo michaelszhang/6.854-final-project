@@ -30,6 +30,7 @@ class BinaryHeap : virtual public IHeap {
     std::vector<BinaryHeapNode*> nodes;
 
     void swap_idx(unsigned i1, unsigned i2);
+    std::vector<Item> select_k(unsigned k);
 };
 
 #endif  // _BINARY_HEAP_H
