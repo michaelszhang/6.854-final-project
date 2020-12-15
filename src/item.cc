@@ -19,6 +19,7 @@ bool Item::operator<(const Item& other) const {
 
 void Item::dump_statistics() {
   printf("Number of comparisons: %" PRId64 "\n", n_comparisons);
+  fflush(stdout);
 }
 
 void Item::reset_statistics() {

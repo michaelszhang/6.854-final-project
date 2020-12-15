@@ -1,6 +1,7 @@
 #include "tests.h"
 #include "tests_generation.h"
 
+#include <assert.h>
 #include <list>
 #include <vector>
 #include <iostream>
@@ -196,11 +197,6 @@ MAKE_TEST(benchmark_delete_2, heap) {
 ///////////////////////////////////
 // BEGIN FULL BENCHMARKING TESTS //
 ///////////////////////////////////
-using namespace std;
-
-void printLine(string s) {
-  cout << s << endl;
-}
 
 void benchmark_test(std::vector<int> values,
 										std::vector<int> operations,
@@ -258,9 +254,9 @@ void generate_test(int n, int k, double alpha,
   operations = operation_sequence(transitions, n, k);
 }
 
-const int BENCHMARK_N = 10000;
-const std::vector<int> K_SIZES = {5, 27, 56, 3162, 20115, 100'000, 578360, 1'000'000, 3762874, 5'000'000};
-// O(c), lg(N), N^0.25, N^0.5, N^0.75, 0.01N, N^0.9, 0.1N, N/lg(N), 0.5N
+const int BENCHMARK_N = 1'000'000;
+const std::vector<int> K_SIZES = {5, 20, 32, 1000, 31622, 10'000, 50'172, 251'189, 100'000, 5'000'000};
+// O(c), lg(N), N^0.25, N^0.5, N^0.75, 0.01N, N/lg(N), N^0.9, 0.1N, 0.5N
 
 
 // Don't run tests that are O(n^2) time complexity and won't terminate in a sane amount of time

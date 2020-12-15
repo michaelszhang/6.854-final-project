@@ -7,6 +7,8 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
+#include <utility>
 #include <vector>
 #include <time.h>
 
@@ -38,8 +40,8 @@ struct TestSkip {};
 
 class TestFixture {
   public:
-    static std::vector<std::function<void()>>& test_registrar() {
-      static std::vector<std::function<void()>> registrar;
+    static std::vector<std::pair<std::string, std::function<void()>>>& test_registrar() {
+      static std::vector<std::pair<std::string, std::function<void()>>> registrar;
       return registrar;
     }
 
@@ -59,8 +61,8 @@ class TestFixture {
     }
 
   protected:
-    TestFixture() {
-      test_registrar().push_back(std::bind(&TestFixture::run_testlib, this));
+    TestFixture(std::string test_name) {
+      test_registrar().emplace_back(test_name, std::bind(&TestFixture::run_testlib, this));
     }
 
     virtual void run_testlib() = 0;
@@ -103,20 +105,45 @@ class TestFixture {
     }
 };
 
-inline void run_all_tests() {
-  for (const auto& test: TestFixture::test_registrar()) {
-    test();
+inline bool test_matches(const char* name, const char* pattern) {
+  if (*pattern == 0) {
+    return *name == 0;
+  } else if (*pattern == '*') {
+    return test_matches(name, pattern+1) || (*name != 0 && test_matches(name+1, pattern));
+  } else if (*pattern == '?') {
+    return test_matches(name+1, pattern+1);
+  } else if (*name == *pattern) {
+    return test_matches(name+1, pattern+1);
+  } else {
+    return false;
   }
-  fprintf(stderr, "Found %d tests: %d passed, %d skipped, %d failed.\n",
-      TestFixture::passed_tests() + TestFixture::skipped_tests() + TestFixture::failed_tests(),
+}
+
+inline void run_all_tests(int argc, char** argv) {
+  std::string filter = "*";
+  if (argc >= 2) {
+    filter = argv[1];
+  }
+  int filtered = 0;
+  for (const auto& test_info: TestFixture::test_registrar()) {
+    if (test_matches(test_info.first.c_str(), filter.c_str())) {
+      test_info.second();
+    } else {
+      ++filtered;
+    }
+  }
+  fprintf(stderr, "Found %d tests: %d passed, %d failed, %d skipped, %d filtered.\n",
+      TestFixture::passed_tests() + TestFixture::skipped_tests() + TestFixture::failed_tests() + filtered,
       TestFixture::passed_tests(),
+      TestFixture::failed_tests(),
       TestFixture::skipped_tests(),
-      TestFixture::failed_tests());
+      filtered);
 }
 
 #define MAKE_TEST(test_name, heap) \
   class Testlib_##test_name : protected TestFixture { \
     public: \
+      Testlib_##test_name() : TestFixture(#test_name) {} \
       void run_testlib() override { \
         DRIVE_TEST(test_name, FibonacciHeap); \
         DRIVE_TEST(test_name, MedianSelect); \
@@ -149,6 +176,7 @@ inline void run_all_tests() {
     Item::reset_statistics(); \
     TestFail::has_failed() = false; \
     std::unique_ptr<IHeap> heap(new heap_type()); \
+    srand(0xdeadc0de); \
     try { \
       fprintf(stderr, "======= Beginning test: %s/%s\n", #test_name, #heap_type); \
       try { \

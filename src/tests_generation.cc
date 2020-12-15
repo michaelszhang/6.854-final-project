@@ -1,5 +1,6 @@
 #include "tests_generation.h"
 
+#include <assert.h>
 #include <vector>
 #include <iostream>
 
