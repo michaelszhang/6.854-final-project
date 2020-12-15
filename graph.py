@@ -2,6 +2,21 @@ import matplotlib.pyplot as plt
 from copy import deepcopy
 import numpy as np
 
+families = [
+        'Ordered-Ordered',
+        'Reverse-Ordered-Ordered',
+        'Ordered-Uniform-Random',
+        'Reverse-Ordered-Uniform-Random',
+        'Uniform-Random-Ordered',
+        'Uniform-Random-Uniform-Random',
+        'Cliffs-Uniform-Random',
+        'Hills-Uniform-Random',
+        'Uniform-Random-Sequential-Decreasekey',
+        'Less-Random-Sequential-Operations',
+        'More-Random-Sequential-Operations',
+        'Uniform-Random-One-Delete',
+        ]
+
 def foo(id):
     name = 'logs/logs-' + id + '.txt'
     fin = open(name, 'r')
@@ -59,7 +74,7 @@ def foo(id):
 
     plt.figure()
     plt.xscale('log')
-    plt.title('Ordered-Ordered')
+    plt.title(families[int(id)])
     plt.xlabel('k')
     plt.ylabel('comparisons')
     for i in range(4):

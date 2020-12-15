@@ -138,19 +138,19 @@ Number of comparisons: 28074750
 ======= Ending test: benchmark_reverse_ordered_ordered8/HeapAdapter<FibonacciHeap>
 
 ======= Beginning test: benchmark_reverse_ordered_ordered9/FibonacciHeap
-Number of comparisons: 999999
+Number of comparisons: 26519992
 ======= Ending test: benchmark_reverse_ordered_ordered9/FibonacciHeap
 
 ======= Beginning test: benchmark_reverse_ordered_ordered9/MedianSelect
-Number of comparisons: 0
+Number of comparisons: 9455067
 ======= Ending test: benchmark_reverse_ordered_ordered9/MedianSelect
 
 ======= Beginning test: benchmark_reverse_ordered_ordered9/HeapAdapter<BinaryHeap>
-Number of comparisons: 999999
+Number of comparisons: 49018412
 ======= Ending test: benchmark_reverse_ordered_ordered9/HeapAdapter<BinaryHeap>
 
 ======= Beginning test: benchmark_reverse_ordered_ordered9/HeapAdapter<FibonacciHeap>
-Number of comparisons: 999999
+Number of comparisons: 28067518
 ======= Ending test: benchmark_reverse_ordered_ordered9/HeapAdapter<FibonacciHeap>
 
 Found 161 tests: 35 passed, 0 failed, 5 skipped, 121 filtered.
