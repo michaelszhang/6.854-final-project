@@ -214,43 +214,41 @@ void benchmark_test(std::vector<int> values,
 	for (int op: operations) {
 		switch ((OPERATION)op) {
 			case INSERT: {
-        printLine("INS");
+        //printLine("INS");
 				int value = values[idx++];
 				INode *node = heap->insert(Item(value));
 				value_to_pointer[value] = node;
 				sampler.add(node);
 				break;
-        printLine("INSOUT");
+        //printLine("INSOUT");
       }
 			case DECREASE_KEY: {
-        printLine("DKIN");
+        //printLine("DKIN");
 				INode *node = sampler.sampleUniformTime();
         int old_value = node->value.get_value();
 				int value = sampler.next_unique_key(old_value);
-        printLine("A");
         value_to_pointer.erase(old_value);
         value_to_pointer[value] = node;
-        printLine("B");
-        std::cout << heap->size() << ' ' << sampler.size() << ' ' << old_value << ' ' << value << std::endl;
+        //std::cout << heap->size() << ' ' << sampler.size() << ' ' << old_value << ' ' << value << std::endl;
 				heap->decrease_key(node, Item(value));
-        printLine("DKOUT");
+        //printLine("DKOUT");
 				break;
       }
 			case DELETE_K: {
-        //std::cout << heap->size() << std::endl;
         //Item min_item = heap->delete_min(k);
         //sampler.remove(value_to_pointer[item.get_value()]);
-        printLine("DELIN");
-        std::cout << heap->size() << ' ' << k << std::endl;
+
+        //printLine("DELIN");
+        //std::cout << heap->size() << ' ' << k << std::endl;
 				std::vector<Item> min_items = heap->delete_k(k);
-        printLine("METHOD");
+        //printLine("METHOD");
         for (Item item: min_items) {
           int value = item.get_value();
 				  sampler.remove(value_to_pointer[value]);
-          //value_to_pointer.erase(value);
+          value_to_pointer.erase(value);
           //std::cout << value_to_pointer[item.get_value()] << std::endl;
         }
-        printLine("DELOUT");
+        //printLine("DELOUT");
 				break;
       }
 		}
@@ -289,8 +287,7 @@ const std::vector<int> K_SIZES = {5, 27, 56, 3162, 20115, 100'000, 578360, 1'000
 
 #define INSTANTIATE_TEST(test_name) \
   BENCHMARK_TEST_GUARD_K(test_name, 0) \
-
-//  BENCHMARK_TEST_GUARD_K(test_name, 1) \
+  BENCHMARK_TEST_GUARD_K(test_name, 1) \
   BENCHMARK_TEST_GUARD_K(test_name, 2) \
   BENCHMARK_TEST_GUARD_K(test_name, 3) \
   BENCHMARK_TEST_GUARD_K(test_name, 4) \
@@ -442,8 +439,7 @@ void benchmark_uniform_random_one_delete(IHeap *heap, int k) {
 INSTANTIATE_TEST(benchmark_ordered_ordered);
 INSTANTIATE_TEST(benchmark_reverse_ordered_ordered);
 INSTANTIATE_TEST(benchmark_ordered_uniform_random);
-//INSTANTIATE_TEST(benchmark_reverse_ordered_uniform_random);
-/*
+INSTANTIATE_TEST(benchmark_reverse_ordered_uniform_random);
 INSTANTIATE_TEST(benchmark_uniform_random_ordered);
 INSTANTIATE_TEST(benchmark_uniform_random_uniform_random_ordered);
 INSTANTIATE_TEST(benchmark_cliffs_uniform_random);
@@ -451,4 +447,4 @@ INSTANTIATE_TEST(benchmark_hills_uniform_random);
 INSTANTIATE_TEST(benchmark_uniform_random_sequential_decreasekey);
 INSTANTIATE_TEST(benchmark_less_random_sequential_operations);
 INSTANTIATE_TEST(benchmark_more_random_sequential_operations);
-INSTANTIATE_TEST(benchmark_uniform_random_one_delete);*/
+INSTANTIATE_TEST(benchmark_uniform_random_one_delete);

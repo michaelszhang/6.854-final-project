@@ -25,20 +25,17 @@ FibonacciHeap::~FibonacciHeap()
 }
 
 void FibonacciHeap::print_tree() {
-  std::cout << "TREE SIZE:" << ' ' << heap_size << std::endl;
   if (heap_size == 0)
     return;
-  int sum = 0;
   FibonacciHeapNode *tmp = last_node;
+  std::cout << "TREE " << heap_size << std::endl;
   while (tmp != nullptr) {
     if (tmp->after == tmp) {
       throw std::runtime_error("Self Loop");
     }
     std::cout << tmp->value.get_value() << ' ' << tmp->rank << std::endl;
-    sum += tmp->rank;
     tmp = tmp->after;
   }
-  //assert(sum == heap_size);
   std::cout << std::endl;
 }
 
@@ -70,6 +67,7 @@ void FibonacciHeap::decrease_key(INode *node, const Item &item)
   }
   x = rep->parent;
   cut(rep);
+  push_tree(rep);
   while (x->marked)
   { // root is always unmarked
     rep = x;
@@ -89,7 +87,6 @@ Item FibonacciHeap::delete_min()
   {
     throw std::runtime_error("Delete from empty tree");
   }
-  print_tree();
   Item min_item = min_node->value;
   FibonacciHeapNode *x = last_node;
   unsigned max_rank = 0;
@@ -115,7 +112,6 @@ Item FibonacciHeap::delete_min()
   }
   coalesce_nodes(max_rank);
   heap_size--;
-  print_tree();
   return min_item;
 }
 
@@ -344,6 +340,7 @@ FibonacciHeap::FibonacciHeapNode *FibonacciHeap::link(FibonacciHeapNode *x, Fibo
 
 FibonacciHeap::FibonacciHeapNode *FibonacciHeap::propagate_link(FibonacciHeapNode *x)
 {
+  x->marked = false;
   x->parent = x->before = x->after = nullptr; // clear orignal links
   while (rank_array[x->rank] != nullptr)
   {
@@ -370,6 +367,7 @@ void FibonacciHeap::coalesce_nodes(unsigned max_rank)
 
 void FibonacciHeap::cut(FibonacciHeapNode *x)
 {
+  x->marked = false;
   FibonacciHeapNode *y = x->parent;
   if (y->child == x)
   {
@@ -383,6 +381,7 @@ void FibonacciHeap::cut(FibonacciHeapNode *x)
   {
     x->after->before = x->before;
   }
+  x->before = x->after = nullptr;
   x->parent = nullptr;
   y->rank--;
 }
