@@ -57,6 +57,7 @@ def foo(id):
 
     print('\n'.join(table_str))
 
+    plt.figure()
     plt.xscale('log')
     plt.title('Ordered-Ordered')
     plt.xlabel('k')

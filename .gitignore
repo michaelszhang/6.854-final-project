@@ -1,4 +1,7 @@
 main
+.vscode
+graphs
+tables
 
 # Prerequisites
 *.d
