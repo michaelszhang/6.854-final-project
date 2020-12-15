@@ -41,9 +41,9 @@ def foo(id):
     K = [5, 20, 32, 1000, 31622, 10000, 50172, 251189, 100000, 500000]
     K[5], K[4] = K[4], K[5]
     K[8], K[7] = K[7], K[8]
+    data[4], data[5] = data[5], data[4]
+    data[7], data[8] = data[8], data[7]
     data = np.array(data).T
-    data[:, 4], data[:, 5] = data[:, 5], data[:, 4]
-    data[:, 7], data[:, 8] = data[:, 8], data[:, 7]
 
     """
     table = deepcopy(data)
