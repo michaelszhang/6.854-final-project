@@ -15,7 +15,7 @@
 
 // Testing
 static const int LARGE_N = 1000000;
-/*
+
 MAKE_TEST(soft_heap_tiny_epsilon, _) {
   RUN_ONCE_ONLY(_);
 
@@ -191,7 +191,7 @@ MAKE_TEST(benchmark_delete_2, heap) {
     assert_delete(heap, {i*2, i*2+1});
   }
   Item::dump_statistics();
-}*/
+}
 
 ///////////////////////////////////
 // BEGIN FULL BENCHMARKING TESTS //
@@ -266,7 +266,7 @@ void generate_test(int n, int k, double alpha,
   operations = operation_sequence(transitions, n, k);
 }
 
-const int BENCHMARK_N = 1000;
+const int BENCHMARK_N = 10000;
 const std::vector<int> K_SIZES = {5, 27, 56, 3162, 20115, 100'000, 578360, 1'000'000, 3762874, 5'000'000};
 // O(c), lg(N), N^0.25, N^0.5, N^0.75, 0.01N, N^0.9, 0.1N, N/lg(N), 0.5N
 
