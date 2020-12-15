@@ -255,7 +255,7 @@ void generate_test(int n, int k, double alpha,
 }
 
 const int BENCHMARK_N = 1'000'000;
-const std::vector<int> K_SIZES = {5, 20, 32, 1000, 31622, 10'000, 50'172, 251'189, 100'000, 5'000'000};
+const std::vector<int> K_SIZES = {5, 20, 32, 1000, 31622, 10'000, 50'172, 251'189, 100'000, 500'000};
 // O(c), lg(N), N^0.25, N^0.5, N^0.75, 0.01N, N/lg(N), N^0.9, 0.1N, 0.5N
 
 
