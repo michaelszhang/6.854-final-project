@@ -1,0 +1,156 @@
+======= Beginning test: benchmark_cliffs_uniform_random0/FibonacciHeap
+Number of comparisons: 9493976
+======= Ending test: benchmark_cliffs_uniform_random0/FibonacciHeap
+
+======= Beginning test: benchmark_cliffs_uniform_random0/MedianSelect
+======= Skipping test: benchmark_cliffs_uniform_random0/MedianSelect
+
+======= Beginning test: benchmark_cliffs_uniform_random0/HeapAdapter<BinaryHeap>
+Number of comparisons: 4057668
+======= Ending test: benchmark_cliffs_uniform_random0/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_cliffs_uniform_random0/HeapAdapter<FibonacciHeap>
+Number of comparisons: 3231974
+======= Ending test: benchmark_cliffs_uniform_random0/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_cliffs_uniform_random1/FibonacciHeap
+Number of comparisons: 12633370
+======= Ending test: benchmark_cliffs_uniform_random1/FibonacciHeap
+
+======= Beginning test: benchmark_cliffs_uniform_random1/MedianSelect
+======= Skipping test: benchmark_cliffs_uniform_random1/MedianSelect
+
+======= Beginning test: benchmark_cliffs_uniform_random1/HeapAdapter<BinaryHeap>
+Number of comparisons: 7717625
+======= Ending test: benchmark_cliffs_uniform_random1/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_cliffs_uniform_random1/HeapAdapter<FibonacciHeap>
+Number of comparisons: 5497095
+======= Ending test: benchmark_cliffs_uniform_random1/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_cliffs_uniform_random2/FibonacciHeap
+Number of comparisons: 14095181
+======= Ending test: benchmark_cliffs_uniform_random2/FibonacciHeap
+
+======= Beginning test: benchmark_cliffs_uniform_random2/MedianSelect
+======= Skipping test: benchmark_cliffs_uniform_random2/MedianSelect
+
+======= Beginning test: benchmark_cliffs_uniform_random2/HeapAdapter<BinaryHeap>
+Number of comparisons: 9168953
+======= Ending test: benchmark_cliffs_uniform_random2/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_cliffs_uniform_random2/HeapAdapter<FibonacciHeap>
+Number of comparisons: 6382917
+======= Ending test: benchmark_cliffs_uniform_random2/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_cliffs_uniform_random3/FibonacciHeap
+Number of comparisons: 19875052
+======= Ending test: benchmark_cliffs_uniform_random3/FibonacciHeap
+
+======= Beginning test: benchmark_cliffs_uniform_random3/MedianSelect
+======= Skipping test: benchmark_cliffs_uniform_random3/MedianSelect
+
+======= Beginning test: benchmark_cliffs_uniform_random3/HeapAdapter<BinaryHeap>
+Number of comparisons: 21143740
+======= Ending test: benchmark_cliffs_uniform_random3/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_cliffs_uniform_random3/HeapAdapter<FibonacciHeap>
+Number of comparisons: 13003169
+======= Ending test: benchmark_cliffs_uniform_random3/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_cliffs_uniform_random4/FibonacciHeap
+Number of comparisons: 20556964
+======= Ending test: benchmark_cliffs_uniform_random4/FibonacciHeap
+
+======= Beginning test: benchmark_cliffs_uniform_random4/MedianSelect
+======= Skipping test: benchmark_cliffs_uniform_random4/MedianSelect
+
+======= Beginning test: benchmark_cliffs_uniform_random4/HeapAdapter<BinaryHeap>
+Number of comparisons: 32706380
+======= Ending test: benchmark_cliffs_uniform_random4/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_cliffs_uniform_random4/HeapAdapter<FibonacciHeap>
+Number of comparisons: 18842326
+======= Ending test: benchmark_cliffs_uniform_random4/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_cliffs_uniform_random5/FibonacciHeap
+Number of comparisons: 20274818
+======= Ending test: benchmark_cliffs_uniform_random5/FibonacciHeap
+
+======= Beginning test: benchmark_cliffs_uniform_random5/MedianSelect
+Number of comparisons: 16561815
+======= Ending test: benchmark_cliffs_uniform_random5/MedianSelect
+
+======= Beginning test: benchmark_cliffs_uniform_random5/HeapAdapter<BinaryHeap>
+Number of comparisons: 29458829
+======= Ending test: benchmark_cliffs_uniform_random5/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_cliffs_uniform_random5/HeapAdapter<FibonacciHeap>
+Number of comparisons: 17303992
+======= Ending test: benchmark_cliffs_uniform_random5/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_cliffs_uniform_random6/FibonacciHeap
+Number of comparisons: 19412888
+======= Ending test: benchmark_cliffs_uniform_random6/FibonacciHeap
+
+======= Beginning test: benchmark_cliffs_uniform_random6/MedianSelect
+Number of comparisons: 14727682
+======= Ending test: benchmark_cliffs_uniform_random6/MedianSelect
+
+======= Beginning test: benchmark_cliffs_uniform_random6/HeapAdapter<BinaryHeap>
+Number of comparisons: 34013914
+======= Ending test: benchmark_cliffs_uniform_random6/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_cliffs_uniform_random6/HeapAdapter<FibonacciHeap>
+Number of comparisons: 19443681
+======= Ending test: benchmark_cliffs_uniform_random6/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_cliffs_uniform_random7/FibonacciHeap
+Number of comparisons: 14976639
+======= Ending test: benchmark_cliffs_uniform_random7/FibonacciHeap
+
+======= Beginning test: benchmark_cliffs_uniform_random7/MedianSelect
+Number of comparisons: 6694109
+======= Ending test: benchmark_cliffs_uniform_random7/MedianSelect
+
+======= Beginning test: benchmark_cliffs_uniform_random7/HeapAdapter<BinaryHeap>
+Number of comparisons: 33262332
+======= Ending test: benchmark_cliffs_uniform_random7/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_cliffs_uniform_random7/HeapAdapter<FibonacciHeap>
+Number of comparisons: 18235505
+======= Ending test: benchmark_cliffs_uniform_random7/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_cliffs_uniform_random8/FibonacciHeap
+Number of comparisons: 22222606
+======= Ending test: benchmark_cliffs_uniform_random8/FibonacciHeap
+
+======= Beginning test: benchmark_cliffs_uniform_random8/MedianSelect
+Number of comparisons: 12025619
+======= Ending test: benchmark_cliffs_uniform_random8/MedianSelect
+
+======= Beginning test: benchmark_cliffs_uniform_random8/HeapAdapter<BinaryHeap>
+Number of comparisons: 37786457
+======= Ending test: benchmark_cliffs_uniform_random8/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_cliffs_uniform_random8/HeapAdapter<FibonacciHeap>
+Number of comparisons: 21550357
+======= Ending test: benchmark_cliffs_uniform_random8/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_cliffs_uniform_random9/FibonacciHeap
+Number of comparisons: 2999729
+======= Ending test: benchmark_cliffs_uniform_random9/FibonacciHeap
+
+======= Beginning test: benchmark_cliffs_uniform_random9/MedianSelect
+Number of comparisons: 0
+======= Ending test: benchmark_cliffs_uniform_random9/MedianSelect
+
+======= Beginning test: benchmark_cliffs_uniform_random9/HeapAdapter<BinaryHeap>
+Number of comparisons: 11351835
+======= Ending test: benchmark_cliffs_uniform_random9/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_cliffs_uniform_random9/HeapAdapter<FibonacciHeap>
+Number of comparisons: 2999729
+======= Ending test: benchmark_cliffs_uniform_random9/HeapAdapter<FibonacciHeap>
+
+Found 161 tests: 35 passed, 0 failed, 5 skipped, 121 filtered.

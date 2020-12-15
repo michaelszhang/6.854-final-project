@@ -1,0 +1,156 @@
+======= Beginning test: benchmark_reverse_ordered_ordered0/FibonacciHeap
+Number of comparisons: 59260027
+======= Ending test: benchmark_reverse_ordered_ordered0/FibonacciHeap
+
+======= Beginning test: benchmark_reverse_ordered_ordered0/MedianSelect
+======= Skipping test: benchmark_reverse_ordered_ordered0/MedianSelect
+
+======= Beginning test: benchmark_reverse_ordered_ordered0/HeapAdapter<BinaryHeap>
+Number of comparisons: 49021012
+======= Ending test: benchmark_reverse_ordered_ordered0/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_reverse_ordered_ordered0/HeapAdapter<FibonacciHeap>
+Number of comparisons: 28081404
+======= Ending test: benchmark_reverse_ordered_ordered0/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_reverse_ordered_ordered1/FibonacciHeap
+Number of comparisons: 67086585
+======= Ending test: benchmark_reverse_ordered_ordered1/FibonacciHeap
+
+======= Beginning test: benchmark_reverse_ordered_ordered1/MedianSelect
+======= Skipping test: benchmark_reverse_ordered_ordered1/MedianSelect
+
+======= Beginning test: benchmark_reverse_ordered_ordered1/HeapAdapter<BinaryHeap>
+Number of comparisons: 49017249
+======= Ending test: benchmark_reverse_ordered_ordered1/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_reverse_ordered_ordered1/HeapAdapter<FibonacciHeap>
+Number of comparisons: 28076538
+======= Ending test: benchmark_reverse_ordered_ordered1/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_reverse_ordered_ordered2/FibonacciHeap
+Number of comparisons: 70142523
+======= Ending test: benchmark_reverse_ordered_ordered2/FibonacciHeap
+
+======= Beginning test: benchmark_reverse_ordered_ordered2/MedianSelect
+======= Skipping test: benchmark_reverse_ordered_ordered2/MedianSelect
+
+======= Beginning test: benchmark_reverse_ordered_ordered2/HeapAdapter<BinaryHeap>
+Number of comparisons: 49017810
+======= Ending test: benchmark_reverse_ordered_ordered2/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_reverse_ordered_ordered2/HeapAdapter<FibonacciHeap>
+Number of comparisons: 28075406
+======= Ending test: benchmark_reverse_ordered_ordered2/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_reverse_ordered_ordered3/FibonacciHeap
+Number of comparisons: 75387099
+======= Ending test: benchmark_reverse_ordered_ordered3/FibonacciHeap
+
+======= Beginning test: benchmark_reverse_ordered_ordered3/MedianSelect
+======= Skipping test: benchmark_reverse_ordered_ordered3/MedianSelect
+
+======= Beginning test: benchmark_reverse_ordered_ordered3/HeapAdapter<BinaryHeap>
+Number of comparisons: 49017853
+======= Ending test: benchmark_reverse_ordered_ordered3/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_reverse_ordered_ordered3/HeapAdapter<FibonacciHeap>
+Number of comparisons: 28074971
+======= Ending test: benchmark_reverse_ordered_ordered3/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_reverse_ordered_ordered4/FibonacciHeap
+Number of comparisons: 58137996
+======= Ending test: benchmark_reverse_ordered_ordered4/FibonacciHeap
+
+======= Beginning test: benchmark_reverse_ordered_ordered4/MedianSelect
+======= Skipping test: benchmark_reverse_ordered_ordered4/MedianSelect
+
+======= Beginning test: benchmark_reverse_ordered_ordered4/HeapAdapter<BinaryHeap>
+Number of comparisons: 48552985
+======= Ending test: benchmark_reverse_ordered_ordered4/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_reverse_ordered_ordered4/HeapAdapter<FibonacciHeap>
+Number of comparisons: 27784956
+======= Ending test: benchmark_reverse_ordered_ordered4/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_reverse_ordered_ordered5/FibonacciHeap
+Number of comparisons: 66765719
+======= Ending test: benchmark_reverse_ordered_ordered5/FibonacciHeap
+
+======= Beginning test: benchmark_reverse_ordered_ordered5/MedianSelect
+Number of comparisons: 467401235
+======= Ending test: benchmark_reverse_ordered_ordered5/MedianSelect
+
+======= Beginning test: benchmark_reverse_ordered_ordered5/HeapAdapter<BinaryHeap>
+Number of comparisons: 49018636
+======= Ending test: benchmark_reverse_ordered_ordered5/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_reverse_ordered_ordered5/HeapAdapter<FibonacciHeap>
+Number of comparisons: 28075682
+======= Ending test: benchmark_reverse_ordered_ordered5/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_reverse_ordered_ordered6/FibonacciHeap
+Number of comparisons: 53479690
+======= Ending test: benchmark_reverse_ordered_ordered6/FibonacciHeap
+
+======= Beginning test: benchmark_reverse_ordered_ordered6/MedianSelect
+Number of comparisons: 95862157
+======= Ending test: benchmark_reverse_ordered_ordered6/MedianSelect
+
+======= Beginning test: benchmark_reverse_ordered_ordered6/HeapAdapter<BinaryHeap>
+Number of comparisons: 47798206
+======= Ending test: benchmark_reverse_ordered_ordered6/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_reverse_ordered_ordered6/HeapAdapter<FibonacciHeap>
+Number of comparisons: 27315318
+======= Ending test: benchmark_reverse_ordered_ordered6/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_reverse_ordered_ordered7/FibonacciHeap
+Number of comparisons: 32648801
+======= Ending test: benchmark_reverse_ordered_ordered7/FibonacciHeap
+
+======= Beginning test: benchmark_reverse_ordered_ordered7/MedianSelect
+Number of comparisons: 20459744
+======= Ending test: benchmark_reverse_ordered_ordered7/MedianSelect
+
+======= Beginning test: benchmark_reverse_ordered_ordered7/HeapAdapter<BinaryHeap>
+Number of comparisons: 41406042
+======= Ending test: benchmark_reverse_ordered_ordered7/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_reverse_ordered_ordered7/HeapAdapter<FibonacciHeap>
+Number of comparisons: 23319601
+======= Ending test: benchmark_reverse_ordered_ordered7/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_reverse_ordered_ordered8/FibonacciHeap
+Number of comparisons: 46603110
+======= Ending test: benchmark_reverse_ordered_ordered8/FibonacciHeap
+
+======= Beginning test: benchmark_reverse_ordered_ordered8/MedianSelect
+Number of comparisons: 50070045
+======= Ending test: benchmark_reverse_ordered_ordered8/MedianSelect
+
+======= Beginning test: benchmark_reverse_ordered_ordered8/HeapAdapter<BinaryHeap>
+Number of comparisons: 49018581
+======= Ending test: benchmark_reverse_ordered_ordered8/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_reverse_ordered_ordered8/HeapAdapter<FibonacciHeap>
+Number of comparisons: 28074750
+======= Ending test: benchmark_reverse_ordered_ordered8/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_reverse_ordered_ordered9/FibonacciHeap
+Number of comparisons: 999999
+======= Ending test: benchmark_reverse_ordered_ordered9/FibonacciHeap
+
+======= Beginning test: benchmark_reverse_ordered_ordered9/MedianSelect
+Number of comparisons: 0
+======= Ending test: benchmark_reverse_ordered_ordered9/MedianSelect
+
+======= Beginning test: benchmark_reverse_ordered_ordered9/HeapAdapter<BinaryHeap>
+Number of comparisons: 999999
+======= Ending test: benchmark_reverse_ordered_ordered9/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_reverse_ordered_ordered9/HeapAdapter<FibonacciHeap>
+Number of comparisons: 999999
+======= Ending test: benchmark_reverse_ordered_ordered9/HeapAdapter<FibonacciHeap>
+
+Found 161 tests: 35 passed, 0 failed, 5 skipped, 121 filtered.

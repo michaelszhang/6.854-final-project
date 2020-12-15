@@ -1,0 +1,156 @@
+======= Beginning test: benchmark_reverse_ordered_uniform_random0/FibonacciHeap
+Number of comparisons: 9488031
+======= Ending test: benchmark_reverse_ordered_uniform_random0/FibonacciHeap
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random0/MedianSelect
+======= Skipping test: benchmark_reverse_ordered_uniform_random0/MedianSelect
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random0/HeapAdapter<BinaryHeap>
+Number of comparisons: 4054784
+======= Ending test: benchmark_reverse_ordered_uniform_random0/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random0/HeapAdapter<FibonacciHeap>
+Number of comparisons: 3230845
+======= Ending test: benchmark_reverse_ordered_uniform_random0/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random1/FibonacciHeap
+Number of comparisons: 12604175
+======= Ending test: benchmark_reverse_ordered_uniform_random1/FibonacciHeap
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random1/MedianSelect
+======= Skipping test: benchmark_reverse_ordered_uniform_random1/MedianSelect
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random1/HeapAdapter<BinaryHeap>
+Number of comparisons: 7714745
+======= Ending test: benchmark_reverse_ordered_uniform_random1/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random1/HeapAdapter<FibonacciHeap>
+Number of comparisons: 5495149
+======= Ending test: benchmark_reverse_ordered_uniform_random1/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random2/FibonacciHeap
+Number of comparisons: 14045124
+======= Ending test: benchmark_reverse_ordered_uniform_random2/FibonacciHeap
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random2/MedianSelect
+======= Skipping test: benchmark_reverse_ordered_uniform_random2/MedianSelect
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random2/HeapAdapter<BinaryHeap>
+Number of comparisons: 9160860
+======= Ending test: benchmark_reverse_ordered_uniform_random2/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random2/HeapAdapter<FibonacciHeap>
+Number of comparisons: 6376341
+======= Ending test: benchmark_reverse_ordered_uniform_random2/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random3/FibonacciHeap
+Number of comparisons: 19784622
+======= Ending test: benchmark_reverse_ordered_uniform_random3/FibonacciHeap
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random3/MedianSelect
+======= Skipping test: benchmark_reverse_ordered_uniform_random3/MedianSelect
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random3/HeapAdapter<BinaryHeap>
+Number of comparisons: 21147698
+======= Ending test: benchmark_reverse_ordered_uniform_random3/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random3/HeapAdapter<FibonacciHeap>
+Number of comparisons: 13003674
+======= Ending test: benchmark_reverse_ordered_uniform_random3/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random4/FibonacciHeap
+Number of comparisons: 19979015
+======= Ending test: benchmark_reverse_ordered_uniform_random4/FibonacciHeap
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random4/MedianSelect
+======= Skipping test: benchmark_reverse_ordered_uniform_random4/MedianSelect
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random4/HeapAdapter<BinaryHeap>
+Number of comparisons: 33140300
+======= Ending test: benchmark_reverse_ordered_uniform_random4/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random4/HeapAdapter<FibonacciHeap>
+Number of comparisons: 19141657
+======= Ending test: benchmark_reverse_ordered_uniform_random4/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random5/FibonacciHeap
+Number of comparisons: 20823733
+======= Ending test: benchmark_reverse_ordered_uniform_random5/FibonacciHeap
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random5/MedianSelect
+Number of comparisons: 17346771
+======= Ending test: benchmark_reverse_ordered_uniform_random5/MedianSelect
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random5/HeapAdapter<BinaryHeap>
+Number of comparisons: 29467152
+======= Ending test: benchmark_reverse_ordered_uniform_random5/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random5/HeapAdapter<FibonacciHeap>
+Number of comparisons: 17312243
+======= Ending test: benchmark_reverse_ordered_uniform_random5/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random6/FibonacciHeap
+Number of comparisons: 18491601
+======= Ending test: benchmark_reverse_ordered_uniform_random6/FibonacciHeap
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random6/MedianSelect
+Number of comparisons: 15623774
+======= Ending test: benchmark_reverse_ordered_uniform_random6/MedianSelect
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random6/HeapAdapter<BinaryHeap>
+Number of comparisons: 34074833
+======= Ending test: benchmark_reverse_ordered_uniform_random6/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random6/HeapAdapter<FibonacciHeap>
+Number of comparisons: 19482496
+======= Ending test: benchmark_reverse_ordered_uniform_random6/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random7/FibonacciHeap
+Number of comparisons: 12627981
+======= Ending test: benchmark_reverse_ordered_uniform_random7/FibonacciHeap
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random7/MedianSelect
+Number of comparisons: 9071549
+======= Ending test: benchmark_reverse_ordered_uniform_random7/MedianSelect
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random7/HeapAdapter<BinaryHeap>
+Number of comparisons: 33503532
+======= Ending test: benchmark_reverse_ordered_uniform_random7/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random7/HeapAdapter<FibonacciHeap>
+Number of comparisons: 18265331
+======= Ending test: benchmark_reverse_ordered_uniform_random7/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random8/FibonacciHeap
+Number of comparisons: 21339696
+======= Ending test: benchmark_reverse_ordered_uniform_random8/FibonacciHeap
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random8/MedianSelect
+Number of comparisons: 12266466
+======= Ending test: benchmark_reverse_ordered_uniform_random8/MedianSelect
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random8/HeapAdapter<BinaryHeap>
+Number of comparisons: 37793081
+======= Ending test: benchmark_reverse_ordered_uniform_random8/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random8/HeapAdapter<FibonacciHeap>
+Number of comparisons: 21564517
+======= Ending test: benchmark_reverse_ordered_uniform_random8/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random9/FibonacciHeap
+Number of comparisons: 20429044
+======= Ending test: benchmark_reverse_ordered_uniform_random9/FibonacciHeap
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random9/MedianSelect
+Number of comparisons: 4280007
+======= Ending test: benchmark_reverse_ordered_uniform_random9/MedianSelect
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random9/HeapAdapter<BinaryHeap>
+Number of comparisons: 43611304
+======= Ending test: benchmark_reverse_ordered_uniform_random9/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_reverse_ordered_uniform_random9/HeapAdapter<FibonacciHeap>
+Number of comparisons: 24504681
+======= Ending test: benchmark_reverse_ordered_uniform_random9/HeapAdapter<FibonacciHeap>
+
+Found 161 tests: 35 passed, 0 failed, 5 skipped, 121 filtered.

@@ -1,0 +1,156 @@
+======= Beginning test: benchmark_less_random_sequential_operations0/FibonacciHeap
+Number of comparisons: 14724536
+======= Ending test: benchmark_less_random_sequential_operations0/FibonacciHeap
+
+======= Beginning test: benchmark_less_random_sequential_operations0/MedianSelect
+======= Skipping test: benchmark_less_random_sequential_operations0/MedianSelect
+
+======= Beginning test: benchmark_less_random_sequential_operations0/HeapAdapter<BinaryHeap>
+Number of comparisons: 6309729
+======= Ending test: benchmark_less_random_sequential_operations0/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_less_random_sequential_operations0/HeapAdapter<FibonacciHeap>
+Number of comparisons: 4398120
+======= Ending test: benchmark_less_random_sequential_operations0/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_less_random_sequential_operations1/FibonacciHeap
+Number of comparisons: 16342428
+======= Ending test: benchmark_less_random_sequential_operations1/FibonacciHeap
+
+======= Beginning test: benchmark_less_random_sequential_operations1/MedianSelect
+======= Skipping test: benchmark_less_random_sequential_operations1/MedianSelect
+
+======= Beginning test: benchmark_less_random_sequential_operations1/HeapAdapter<BinaryHeap>
+Number of comparisons: 8384480
+======= Ending test: benchmark_less_random_sequential_operations1/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_less_random_sequential_operations1/HeapAdapter<FibonacciHeap>
+Number of comparisons: 5747036
+======= Ending test: benchmark_less_random_sequential_operations1/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_less_random_sequential_operations2/FibonacciHeap
+Number of comparisons: 17527096
+======= Ending test: benchmark_less_random_sequential_operations2/FibonacciHeap
+
+======= Beginning test: benchmark_less_random_sequential_operations2/MedianSelect
+======= Skipping test: benchmark_less_random_sequential_operations2/MedianSelect
+
+======= Beginning test: benchmark_less_random_sequential_operations2/HeapAdapter<BinaryHeap>
+Number of comparisons: 9453505
+======= Ending test: benchmark_less_random_sequential_operations2/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_less_random_sequential_operations2/HeapAdapter<FibonacciHeap>
+Number of comparisons: 6487883
+======= Ending test: benchmark_less_random_sequential_operations2/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_less_random_sequential_operations3/FibonacciHeap
+Number of comparisons: 22457815
+======= Ending test: benchmark_less_random_sequential_operations3/FibonacciHeap
+
+======= Beginning test: benchmark_less_random_sequential_operations3/MedianSelect
+======= Skipping test: benchmark_less_random_sequential_operations3/MedianSelect
+
+======= Beginning test: benchmark_less_random_sequential_operations3/HeapAdapter<BinaryHeap>
+Number of comparisons: 19884383
+======= Ending test: benchmark_less_random_sequential_operations3/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_less_random_sequential_operations3/HeapAdapter<FibonacciHeap>
+Number of comparisons: 13160458
+======= Ending test: benchmark_less_random_sequential_operations3/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_less_random_sequential_operations4/FibonacciHeap
+Number of comparisons: 23663599
+======= Ending test: benchmark_less_random_sequential_operations4/FibonacciHeap
+
+======= Beginning test: benchmark_less_random_sequential_operations4/MedianSelect
+======= Skipping test: benchmark_less_random_sequential_operations4/MedianSelect
+
+======= Beginning test: benchmark_less_random_sequential_operations4/HeapAdapter<BinaryHeap>
+Number of comparisons: 30478318
+======= Ending test: benchmark_less_random_sequential_operations4/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_less_random_sequential_operations4/HeapAdapter<FibonacciHeap>
+Number of comparisons: 19542858
+======= Ending test: benchmark_less_random_sequential_operations4/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_less_random_sequential_operations5/FibonacciHeap
+Number of comparisons: 23517162
+======= Ending test: benchmark_less_random_sequential_operations5/FibonacciHeap
+
+======= Beginning test: benchmark_less_random_sequential_operations5/MedianSelect
+Number of comparisons: 17658377
+======= Ending test: benchmark_less_random_sequential_operations5/MedianSelect
+
+======= Beginning test: benchmark_less_random_sequential_operations5/HeapAdapter<BinaryHeap>
+Number of comparisons: 27301513
+======= Ending test: benchmark_less_random_sequential_operations5/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_less_random_sequential_operations5/HeapAdapter<FibonacciHeap>
+Number of comparisons: 17506196
+======= Ending test: benchmark_less_random_sequential_operations5/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_less_random_sequential_operations6/FibonacciHeap
+Number of comparisons: 23968242
+======= Ending test: benchmark_less_random_sequential_operations6/FibonacciHeap
+
+======= Beginning test: benchmark_less_random_sequential_operations6/MedianSelect
+Number of comparisons: 8939153
+======= Ending test: benchmark_less_random_sequential_operations6/MedianSelect
+
+======= Beginning test: benchmark_less_random_sequential_operations6/HeapAdapter<BinaryHeap>
+Number of comparisons: 30033785
+======= Ending test: benchmark_less_random_sequential_operations6/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_less_random_sequential_operations6/HeapAdapter<FibonacciHeap>
+Number of comparisons: 19089663
+======= Ending test: benchmark_less_random_sequential_operations6/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_less_random_sequential_operations7/FibonacciHeap
+Number of comparisons: 14964352
+======= Ending test: benchmark_less_random_sequential_operations7/FibonacciHeap
+
+======= Beginning test: benchmark_less_random_sequential_operations7/MedianSelect
+Number of comparisons: 9220303
+======= Ending test: benchmark_less_random_sequential_operations7/MedianSelect
+
+======= Beginning test: benchmark_less_random_sequential_operations7/HeapAdapter<BinaryHeap>
+Number of comparisons: 33009022
+======= Ending test: benchmark_less_random_sequential_operations7/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_less_random_sequential_operations7/HeapAdapter<FibonacciHeap>
+Number of comparisons: 19323250
+======= Ending test: benchmark_less_random_sequential_operations7/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_less_random_sequential_operations8/FibonacciHeap
+Number of comparisons: 23161329
+======= Ending test: benchmark_less_random_sequential_operations8/FibonacciHeap
+
+======= Beginning test: benchmark_less_random_sequential_operations8/MedianSelect
+Number of comparisons: 10313624
+======= Ending test: benchmark_less_random_sequential_operations8/MedianSelect
+
+======= Beginning test: benchmark_less_random_sequential_operations8/HeapAdapter<BinaryHeap>
+Number of comparisons: 35317815
+======= Ending test: benchmark_less_random_sequential_operations8/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_less_random_sequential_operations8/HeapAdapter<FibonacciHeap>
+Number of comparisons: 22325669
+======= Ending test: benchmark_less_random_sequential_operations8/HeapAdapter<FibonacciHeap>
+
+======= Beginning test: benchmark_less_random_sequential_operations9/FibonacciHeap
+Number of comparisons: 20386857
+======= Ending test: benchmark_less_random_sequential_operations9/FibonacciHeap
+
+======= Beginning test: benchmark_less_random_sequential_operations9/MedianSelect
+Number of comparisons: 4695472
+======= Ending test: benchmark_less_random_sequential_operations9/MedianSelect
+
+======= Beginning test: benchmark_less_random_sequential_operations9/HeapAdapter<BinaryHeap>
+Number of comparisons: 41964593
+======= Ending test: benchmark_less_random_sequential_operations9/HeapAdapter<BinaryHeap>
+
+======= Beginning test: benchmark_less_random_sequential_operations9/HeapAdapter<FibonacciHeap>
+Number of comparisons: 26284733
+======= Ending test: benchmark_less_random_sequential_operations9/HeapAdapter<FibonacciHeap>
+
+Found 161 tests: 35 passed, 0 failed, 5 skipped, 121 filtered.
