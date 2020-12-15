@@ -292,7 +292,7 @@ std::vector<Item> FibonacciHeap::delete_k(unsigned k)
       child = child->after;
       if (k_result_nodes.find(c) != k_result_nodes.end())
         continue;
-      propagate_link(c);
+      c = propagate_link(c);
       max_rank = std::max(max_rank, c->rank);
     }
   }

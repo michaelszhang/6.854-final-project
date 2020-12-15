@@ -210,52 +210,44 @@ void benchmark_test(std::vector<int> values,
 	int idx = 0;
   int cnt = 0;
 
-  //std::cout << operations.size() << std::endl;
 	for (int op: operations) {
 		switch ((OPERATION)op) {
 			case INSERT: {
-        //printLine("INS");
 				int value = values[idx++];
 				INode *node = heap->insert(Item(value));
 				value_to_pointer[value] = node;
 				sampler.add(node);
 				break;
-        //printLine("INSOUT");
       }
 			case DECREASE_KEY: {
-        //printLine("DKIN");
 				INode *node = sampler.sampleUniformTime();
         int old_value = node->value.get_value();
 				int value = sampler.next_unique_key(old_value);
         value_to_pointer.erase(old_value);
         value_to_pointer[value] = node;
-        //std::cout << heap->size() << ' ' << sampler.size() << ' ' << old_value << ' ' << value << std::endl;
 				heap->decrease_key(node, Item(value));
-        //printLine("DKOUT");
 				break;
       }
 			case DELETE_K: {
         //Item min_item = heap->delete_min(k);
         //sampler.remove(value_to_pointer[item.get_value()]);
-
-        //printLine("DELIN");
-        //std::cout << heap->size() << ' ' << k << std::endl;
+        assert(heap->size() >= k);
 				std::vector<Item> min_items = heap->delete_k(k);
-        //printLine("METHOD");
+        /*
+        for (int i = 0; i < k; i++)
+          min_items.push_back(heap->delete_min());
+        */
         for (Item item: min_items) {
           int value = item.get_value();
 				  sampler.remove(value_to_pointer[value]);
           value_to_pointer.erase(value);
-          //std::cout << value_to_pointer[item.get_value()] << std::endl;
         }
-        //printLine("DELOUT");
 				break;
       }
 		}
     cnt++;
   }
 	Item::dump_statistics();
-  //exit(0);
 }
 
 void generate_test(int n, int k, double alpha,
@@ -274,7 +266,6 @@ const std::vector<int> K_SIZES = {5, 27, 56, 3162, 20115, 100'000, 578360, 1'000
 // Don't run tests that are O(n^2) time complexity and won't terminate in a sane amount of time
 #define BENCHMARK_TEST_GUARD_K(test_name, kidx) \
   MAKE_TEST(test_name##kidx, heap) { \
-    SKIP_HEAP(heap, FibonacciHeap); \
     if (kidx < 5) { \
       SKIP_HEAP(heap, MedianSelect); \
     } \
