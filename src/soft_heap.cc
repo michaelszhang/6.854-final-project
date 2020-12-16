@@ -1,7 +1,5 @@
 #include "soft_heap.h"
 
-#include <algorithm>
-#include <math.h>
 #include <stdexcept>
 
 unsigned compute_T(double epsilon) {

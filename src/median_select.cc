@@ -1,7 +1,6 @@
 #include "median_select.h"
 
 #include <algorithm>
-#include <list>
 #include <stdexcept>
 #include <vector>
 

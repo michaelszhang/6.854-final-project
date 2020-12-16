@@ -1,8 +1,8 @@
 #include "tests_generation.h"
 
 #include <assert.h>
+
 #include <vector>
-#include <iostream>
 
 
 DecreaseKeySampler::DecreaseKeySampler(int num_total) {
@@ -38,16 +38,6 @@ INode* DecreaseKeySampler::sampleUniformTime() {
   int start = distribution.begin()->first;
   int end = distribution.rbegin()->first;
   double t = (start + randomUniform() * (end - start + 1) - 1);
-  /*
-  std::cout << "TIME " << time << ' ' << start << ' ' << end << ' ' << t << std::endl;
-  for (auto &it : distribution) {
-    std::cout << it.first << ' ' << it.second << std::endl;
-  }
-  std::cout << time_inserted.size() << ' ' << distribution.size() << std::endl;
-  std::cout << (distribution.lower_bound(t)->first) << std::endl;
-  std::cout << (distribution.lower_bound(t)->second == nullptr) << std::endl;
-  std::cout << "ADDRESS " << (distribution.lower_bound(t)->second) << std::endl;
-  std::cout << distribution.lower_bound(t)->second->value.get_value() << std::endl;*/
   return distribution.lower_bound(t)->second;
 }
 
@@ -71,69 +61,69 @@ unsigned DecreaseKeySampler::size() {
 
 double randomUniform() {
   // Return value in [0, 1] sampled uniformly
-	return (double)rand() / RAND_MAX;
+  return (double)rand() / RAND_MAX;
 }
 
 std::vector<int> value_sequence(int n, double alpha) {
-	// Generate value sequence via Fischer-Yates Shuffle
-	// alpha controls how shuffled sequence is
-	// i.e. alpha = 0 means in order while 1 produces an unbiased permuation
-	std::vector<int> v;
-	for (int i = 0; i < n; i++) {
-		v.push_back(i);
-	}
+  // Generate value sequence via Fischer-Yates Shuffle
+  // alpha controls how shuffled sequence is
+  // i.e. alpha = 0 means in order while 1 produces an unbiased permuation
+  std::vector<int> v;
+  for (int i = 0; i < n; i++) {
+    v.push_back(i);
+  }
   for (int i = 0; i < n - 1; i++) {
-		if (randomUniform() < alpha) {
-			int j = i + rand() % (n - i);
-			std::swap(v[i], v[j]);
-		}
-	}
-	return v;
+    if (randomUniform() < alpha) {
+      int j = i + rand() % (n - i);
+      std::swap(v[i], v[j]);
+    }
+  }
+  return v;
 }
 
 int next_state(int *operations_left, std::vector<double> &pdf) {
   // Return next valid state of random walk for operation generation
-	double sum = 0;
-	std::vector<double> cdf;
-	std::vector<int> sample_space;
-	for (unsigned i = 0; i < pdf.size(); i++) {
-		if (operations_left[i] > 0) {
-			sum += pdf[i];
-			cdf.push_back(sum);
-			sample_space.push_back(i);
-		}
-	}
-	if (sum == 0) {
-		return -1;
-	}
-	double r = randomUniform() * sum;
-	for (unsigned i = 0; i < cdf.size() - 1; i++) {
-		if (r < cdf[i]) {
-			return sample_space[i];
-		}
-	}
-	return sample_space[cdf.size() - 1];
+  double sum = 0;
+  std::vector<double> cdf;
+  std::vector<int> sample_space;
+  for (unsigned i = 0; i < pdf.size(); i++) {
+    if (operations_left[i] > 0) {
+      sum += pdf[i];
+      cdf.push_back(sum);
+      sample_space.push_back(i);
+    }
+  }
+  if (sum == 0) {
+    return -1;
+  }
+  double r = randomUniform() * sum;
+  for (unsigned i = 0; i < cdf.size() - 1; i++) {
+    if (r < cdf[i]) {
+      return sample_space[i];
+    }
+  }
+  return sample_space[cdf.size() - 1];
 }
 
 std::vector<int> operation_sequence(std::vector<std::vector<double> > &transitions, int n, int k) {
   // Return sequence of operations based on parameters
-	// Transitions contain the PDFs of the chain matrix, n0 num inserts, n1 num dec key
-	int operations_left[NUM_OPERATIONS] = {n, 0, 0}; // 0, 1, 2 are insert, dec key, del k
-	int cur_state = 0;
+  // Transitions contain the PDFs of the chain matrix, n0 num inserts, n1 num dec key
+  int operations_left[NUM_OPERATIONS] = {n, 0, 0}; // 0, 1, 2 are insert, dec key, del k
+  int cur_state = 0;
   int heap_size = 0;
-	std::vector<int> v;
-	while (cur_state != -1 && (operations_left[INSERT] + operations_left[DELETE_K]) > 0) {
-		v.push_back(cur_state);
-		operations_left[cur_state]--;
-		if (cur_state == INSERT) {
+  std::vector<int> v;
+  while (cur_state != -1 && (operations_left[INSERT] + operations_left[DELETE_K]) > 0) {
+    v.push_back(cur_state);
+    operations_left[cur_state]--;
+    if (cur_state == INSERT) {
       heap_size++;
       operations_left[DECREASE_KEY]++;
-			operations_left[DELETE_K] += (heap_size % k == 0);
-		} else if (cur_state == DELETE_K) {
+      operations_left[DELETE_K] += (heap_size % k == 0);
+    } else if (cur_state == DELETE_K) {
       operations_left[DECREASE_KEY] = std::max(0, operations_left[DECREASE_KEY] - k);
       heap_size -= k;
-		}
-		cur_state = next_state(operations_left, transitions[cur_state]);
-	}
-	return v;
+    }
+    cur_state = next_state(operations_left, transitions[cur_state]);
+  }
+  return v;
 }

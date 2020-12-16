@@ -1,14 +1,11 @@
 #include "fibonacci_heap.h"
-#include "soft_heap.h"
-#include "median_select.h"
 
-#include <algorithm>
-#include <cassert>
-#include <iostream>
-#include <set>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+
+#include "median_select.h"
+#include "soft_heap.h"
 
 FibonacciHeap::FibonacciHeap()
     : heap_size(0), min_node(nullptr), last_node(nullptr)
@@ -17,26 +14,6 @@ FibonacciHeap::FibonacciHeap()
   {
     rank_array[i] = nullptr;
   }
-}
-
-FibonacciHeap::~FibonacciHeap()
-{
-  // TBD
-}
-
-void FibonacciHeap::print_tree() {
-  if (heap_size == 0)
-    return;
-  FibonacciHeapNode *tmp = last_node;
-  std::cout << "TREE " << heap_size << std::endl;
-  while (tmp != nullptr) {
-    if (tmp->after == tmp) {
-      throw std::runtime_error("Self Loop");
-    }
-    std::cout << tmp->value.get_value() << ' ' << tmp->rank << std::endl;
-    tmp = tmp->after;
-  }
-  std::cout << std::endl;
 }
 
 INode *FibonacciHeap::insert(const Item &item)
@@ -180,51 +157,27 @@ std::vector<Item> FibonacciHeap::delete_k(unsigned k)
     return nodes[0];
   };
 
-  std::set<int> inserted;
-  auto update_todo = [&contents, &todo, &heapify_children, &inserted](const Item *item) {
+  auto update_todo = [&contents, &todo, &heapify_children](const Item *item) {
     FibonacciHeapNode *x = contents[item];
-    if (x->left != nullptr)
-    {
+    if (x->left != nullptr) {
       todo.push_back(x->left);
-      if (!inserted.insert(x->left->value.get_value()).second)
-      {
-        throw std::runtime_error("disaster1");
-      }
     }
-    if (x->right != nullptr)
-    {
+    if (x->right != nullptr) {
       todo.push_back(x->right);
-      if (!inserted.insert(x->right->value.get_value()).second)
-      {
-        throw std::runtime_error("disaster2");
-      }
     }
-    if (x->child != nullptr)
-    {
+    if (x->child != nullptr) {
       todo.push_back(heapify_children(x->child));
-      if (!inserted.insert(todo.back()->value.get_value()).second)
-      {
-        throw std::runtime_error("disaster3");
-      }
     }
   };
 
-  std::set<int> qwer;
-  auto push_item = [&result, &contents, &todo, &q, &update_todo, &result_nodes, &qwer]() {
+  auto push_item = [&result, &contents, &todo, &q, &update_todo, &result_nodes]() {
     FibonacciHeapNode *node = todo.back();
     todo.pop_back();
     result.push_back(node->value);
     result_nodes.push_back(node);
     contents[&node->value] = node;
     SoftHeap::CorruptionList corrupted = q.insert(node->value);
-
-    if (!qwer.insert(node->value.get_value()).second)
-    {
-      throw std::runtime_error("disaster4");
-    }
-
-    for (const Item *item : corrupted)
-    {
+    for (const Item *item : corrupted) {
       update_todo(item);
     }
   };

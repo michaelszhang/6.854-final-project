@@ -1,9 +1,9 @@
 #ifndef _ITEM_H
 #define _ITEM_H
 
-#include <functional>
-#include <limits>
 #include <stdint.h>
+
+#include <limits>
 
 class Item {
   public:

@@ -1,20 +1,16 @@
 #include "tests.h"
-#include "tests_generation.h"
 
 #include <assert.h>
+
 #include <list>
 #include <vector>
-#include <iostream>
 #include <map>
 
-#include "binary_heap.h"
-#include "fibonacci_heap.h"
 #include "heap.h"
 #include "item.h"
-#include "median_select.h"
 #include "soft_heap.h"
+#include "tests_generation.h"
 
-// Testing
 static const int LARGE_N = 1000000;
 
 MAKE_TEST(soft_heap_tiny_epsilon, _) {
@@ -99,30 +95,30 @@ MAKE_TEST(soft_heap_corruption_larger, _) {
 }
 
 MAKE_TEST(correctness_simple_insert_delete, heap) {
-	for (int i: {6, 10, 2, 15, 8, 12, 3, 0, 14, 4, 1, 11, 5, 13, 9, 7}) {
-		heap->insert(Item(i));
-	}
-	Item::dump_statistics();
-	for (int i = 0; i < 16; ++i) {
-		expect_delete(heap, i);
-	}
-	Item::dump_statistics();
+  for (int i: {6, 10, 2, 15, 8, 12, 3, 0, 14, 4, 1, 11, 5, 13, 9, 7}) {
+    heap->insert(Item(i));
+  }
+  Item::dump_statistics();
+  for (int i = 0; i < 16; ++i) {
+    expect_delete(heap, i);
+  }
+  Item::dump_statistics();
 }
 
 MAKE_TEST(correctness_simple_decreasekey, heap) {
-	std::vector<INode*> nodes;
-	for (int i = 0; i < 16; ++i) {
-		nodes.push_back(heap->insert(Item(i)));
-	}
-	Item::dump_statistics();
-	for (int i = 0; i < 16; ++i) {
-		heap->decrease_key(nodes[i], -i);
-	}
-	Item::dump_statistics();
-	for (int i = 0; i < 16; ++i) {
-		expect_delete(heap, i - 15);
-	}
-	Item::dump_statistics();
+  std::vector<INode*> nodes;
+  for (int i = 0; i < 16; ++i) {
+    nodes.push_back(heap->insert(Item(i)));
+  }
+  Item::dump_statistics();
+  for (int i = 0; i < 16; ++i) {
+    heap->decrease_key(nodes[i], -i);
+  }
+  Item::dump_statistics();
+  for (int i = 0; i < 16; ++i) {
+    expect_delete(heap, i - 15);
+  }
+  Item::dump_statistics();
 }
 
 MAKE_TEST(correctness_simple_delete_1, heap) {
@@ -199,51 +195,45 @@ MAKE_TEST(benchmark_delete_2, heap) {
 ///////////////////////////////////
 
 void benchmark_test(std::vector<int> values,
-										std::vector<int> operations,
-										IHeap* heap, int n, int k) {
+                    std::vector<int> operations,
+                    IHeap* heap, int n, int k) {
   DecreaseKeySampler sampler(n);
   std::map<int, INode*> value_to_pointer;
-	int idx = 0;
+  int idx = 0;
   int cnt = 0;
 
-	for (int op: operations) {
-		switch ((OPERATION)op) {
-			case INSERT: {
-				int value = values[idx++];
-				INode *node = heap->insert(Item(value));
-				value_to_pointer[value] = node;
-				sampler.add(node);
-				break;
+  for (int op: operations) {
+    switch ((OPERATION)op) {
+      case INSERT: {
+        int value = values[idx++];
+        INode *node = heap->insert(Item(value));
+        value_to_pointer[value] = node;
+        sampler.add(node);
+        break;
       }
-			case DECREASE_KEY: {
-				INode *node = sampler.sampleUniformTime();
+      case DECREASE_KEY: {
+        INode *node = sampler.sampleUniformTime();
         int old_value = node->value.get_value();
-				int value = sampler.next_unique_key(old_value);
+        int value = sampler.next_unique_key(old_value);
         value_to_pointer.erase(old_value);
         value_to_pointer[value] = node;
-				heap->decrease_key(node, Item(value));
-				break;
+        heap->decrease_key(node, Item(value));
+        break;
       }
-			case DELETE_K: {
-        //Item min_item = heap->delete_min(k);
-        //sampler.remove(value_to_pointer[item.get_value()]);
-        assert(heap->size() >= k);
-				std::vector<Item> min_items = heap->delete_k(k);
-        /*
-        for (int i = 0; i < k; i++)
-          min_items.push_back(heap->delete_min());
-        */
+      case DELETE_K: {
+        assert((int)heap->size() >= k);
+        std::vector<Item> min_items = heap->delete_k(k);
         for (Item item: min_items) {
           int value = item.get_value();
-				  sampler.remove(value_to_pointer[value]);
+          sampler.remove(value_to_pointer[value]);
           value_to_pointer.erase(value);
         }
-				break;
+        break;
       }
-		}
+    }
     cnt++;
   }
-	Item::dump_statistics();
+  Item::dump_statistics();
 }
 
 void generate_test(int n, int k, double alpha,
@@ -265,10 +255,6 @@ const std::vector<int> K_SIZES = {5, 20, 32, 1000, 31622, 10'000, 50'172, 251'18
     if (kidx < 5) { \
       SKIP_HEAP(heap, MedianSelect); \
     } \
-    /*if (kidx >= 5) { \
-      SKIP_HEAP(HeapAdapter<BinaryHeap>); \
-      SKIP_HEAP(HeapAdapter<FibonacciHeap>); \
-    } */ \
     test_name(heap, K_SIZES[kidx]); \
   }
 
@@ -282,14 +268,14 @@ const std::vector<int> K_SIZES = {5, 20, 32, 1000, 31622, 10'000, 50'172, 251'18
   BENCHMARK_TEST_GUARD_K(test_name, 6) \
   BENCHMARK_TEST_GUARD_K(test_name, 7) \
   BENCHMARK_TEST_GUARD_K(test_name, 8) \
-  BENCHMARK_TEST_GUARD_K(test_name, 9) \
+  BENCHMARK_TEST_GUARD_K(test_name, 9)
 
 void benchmark_ordered_ordered(IHeap *heap, int k) {
   double alpha = 0;
   std::vector<int> values, operations;
-	std::vector<std::vector<double>> transitions = {{1 - EPSILON, EPSILON, 0},
-		                                              {0, 1 - EPSILON, EPSILON},
-		                                              {0, 0, 1}};
+  std::vector<std::vector<double>> transitions = {{1 - EPSILON, EPSILON, 0},
+                                                  {0, 1 - EPSILON, EPSILON},
+                                                  {0, 0, 1}};
   generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
   benchmark_test(values, operations, heap, BENCHMARK_N, k);
 }
@@ -297,9 +283,9 @@ void benchmark_ordered_ordered(IHeap *heap, int k) {
 void benchmark_reverse_ordered_ordered(IHeap *heap, int k) {
   double alpha = 0;
   std::vector<int> values, operations;
-	std::vector<std::vector<double>> transitions = {{1 - EPSILON, EPSILON, 0},
-		                                              {0, 1 - EPSILON, EPSILON},
-		                                              {0, 0, 1}};
+  std::vector<std::vector<double>> transitions = {{1 - EPSILON, EPSILON, 0},
+                                                  {0, 1 - EPSILON, EPSILON},
+                                                  {0, 0, 1}};
   std::reverse(values.begin(), values.end());
   generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
   benchmark_test(values, operations, heap, BENCHMARK_N, k);
@@ -308,9 +294,9 @@ void benchmark_reverse_ordered_ordered(IHeap *heap, int k) {
 void benchmark_ordered_uniform_random(IHeap *heap, int k) {
   double alpha = 0;
   std::vector<int> values, operations;
-	std::vector<std::vector<double>> transitions = {{1.0 / 3, 1.0 / 3, 1.0 / 3},
-		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3},
-		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3}};
+  std::vector<std::vector<double>> transitions = {{1.0 / 3, 1.0 / 3, 1.0 / 3},
+                                                  {1.0 / 3, 1.0 / 3, 1.0 / 3},
+                                                  {1.0 / 3, 1.0 / 3, 1.0 / 3}};
   generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
   benchmark_test(values, operations, heap, BENCHMARK_N, k);
 
@@ -319,9 +305,9 @@ void benchmark_ordered_uniform_random(IHeap *heap, int k) {
 void benchmark_reverse_ordered_uniform_random(IHeap *heap, int k) {
   double alpha = 0;
   std::vector<int> values, operations;
-	std::vector<std::vector<double>> transitions = {{1.0 / 3, 1.0 / 3, 1.0 / 3},
-		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3},
-		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3}};
+  std::vector<std::vector<double>> transitions = {{1.0 / 3, 1.0 / 3, 1.0 / 3},
+                                                  {1.0 / 3, 1.0 / 3, 1.0 / 3},
+                                                  {1.0 / 3, 1.0 / 3, 1.0 / 3}};
   std::reverse(values.begin(), values.end());
   generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
   benchmark_test(values, operations, heap, BENCHMARK_N, k);
@@ -330,9 +316,9 @@ void benchmark_reverse_ordered_uniform_random(IHeap *heap, int k) {
 void benchmark_uniform_random_ordered(IHeap *heap, int k) {
   double alpha = 1;
   std::vector<int> values, operations;
-	std::vector<std::vector<double>> transitions = {{1 - EPSILON, EPSILON, 0},
-		                                              {0, 1 - EPSILON, EPSILON},
-		                                              {0, 0, 1}};
+  std::vector<std::vector<double>> transitions = {{1 - EPSILON, EPSILON, 0},
+                                                  {0, 1 - EPSILON, EPSILON},
+                                                  {0, 0, 1}};
   generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
   benchmark_test(values, operations, heap, BENCHMARK_N, k);
 }
@@ -341,8 +327,8 @@ void benchmark_uniform_random_uniform_random_ordered(IHeap *heap, int k) {
   double alpha = 1;
   std::vector<int> values, operations;
   std::vector<std::vector<double>> transitions = {{1.0 / 3, 1.0 / 3, 1.0 / 3},
-		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3},
-		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3}};
+                                                  {1.0 / 3, 1.0 / 3, 1.0 / 3},
+                                                  {1.0 / 3, 1.0 / 3, 1.0 / 3}};
   generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
   benchmark_test(values, operations, heap, BENCHMARK_N, k);
 }
@@ -357,8 +343,8 @@ void benchmark_cliffs_uniform_random(IHeap *heap, int k) {
     }
   }
   std::vector<std::vector<double>> transitions = {{1.0 / 3, 1.0 / 3, 1.0 / 3},
-		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3},
-		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3}};
+                                                  {1.0 / 3, 1.0 / 3, 1.0 / 3},
+                                                  {1.0 / 3, 1.0 / 3, 1.0 / 3}};
   std::vector<int> operations = operation_sequence(transitions, N, k);
   benchmark_test(values, operations, heap, N, k);
 }
@@ -377,8 +363,8 @@ void benchmark_hills_uniform_random(IHeap *heap, int k) {
     }
   }
   std::vector<std::vector<double>> transitions = {{1.0 / 3, 1.0 / 3, 1.0 / 3},
-		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3},
-		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3}};
+                                                  {1.0 / 3, 1.0 / 3, 1.0 / 3},
+                                                  {1.0 / 3, 1.0 / 3, 1.0 / 3}};
   std::vector<int> operations = operation_sequence(transitions, N, k);
   benchmark_test(values, operations, heap, N, k);
 }
@@ -387,8 +373,8 @@ void benchmark_uniform_random_sequential_decreasekey(IHeap *heap, int k) {
   double alpha = 1.0;
   std::vector<int> values, operations;
   std::vector<std::vector<double>> transitions = {{1.0 / 3, 1.0 / 3, 1.0 / 3},
-		                                              {0.1, 0.8, 0.1},
-		                                              {1.0 / 3, 1.0 / 3, 1.0 / 3}};
+                                                  {0.1, 0.8, 0.1},
+                                                  {1.0 / 3, 1.0 / 3, 1.0 / 3}};
   generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
   benchmark_test(values, operations, heap, BENCHMARK_N, k);
 }
@@ -397,8 +383,8 @@ void benchmark_less_random_sequential_operations(IHeap *heap, int k) {
   double alpha = 0.25;
   std::vector<int> values, operations;
   std::vector<std::vector<double>> transitions = {{0.8, 0.1, 0.1},
-		                                              {0.1, 0.8, 0.1},
-		                                              {0.1, 0.1, 0.8}};
+                                                  {0.1, 0.8, 0.1},
+                                                  {0.1, 0.1, 0.8}};
   generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
   benchmark_test(values, operations, heap, BENCHMARK_N, k);
 }
@@ -407,8 +393,8 @@ void benchmark_more_random_sequential_operations(IHeap *heap, int k) {
   double alpha = 0.8;
   std::vector<int> values, operations;
   std::vector<std::vector<double>> transitions = {{0.8, 0.1, 0.1},
-		                                              {0.1, 0.8, 0.1},
-		                                              {0.1, 0.1, 0.8}};
+                                                  {0.1, 0.8, 0.1},
+                                                  {0.1, 0.1, 0.8}};
   generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
   benchmark_test(values, operations, heap, BENCHMARK_N, k);
 }
@@ -417,8 +403,8 @@ void benchmark_uniform_random_one_delete(IHeap *heap, int k) {
   double alpha = 1.0;
   std::vector<int> values, operations;
   std::vector<std::vector<double>> transitions = {{0.495, 0.495, 0.01},
-		                                              {0.495, 0.495, 0.01},
-		                                              {0.495, 0.495, 0.01}};
+                                                  {0.495, 0.495, 0.01},
+                                                  {0.495, 0.495, 0.01}};
   generate_test(BENCHMARK_N, k, alpha, transitions, values, operations);
   benchmark_test(values, operations, heap, BENCHMARK_N, k);
 }

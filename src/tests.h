@@ -1,16 +1,15 @@
 #ifndef _TESTS_H
 #define _TESTS_H
 
+#include <stdarg.h>
+#include <stdio.h>
+
 #include <algorithm>
 #include <functional>
 #include <memory>
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string>
 #include <utility>
 #include <vector>
-#include <time.h>
 
 #include "binary_heap.h"
 #include "fibonacci_heap.h"
