@@ -1,6 +1,6 @@
 # 6.854-final-project
  
- Done in collaboration with Jerry Mao and Michael Zhang.
+ Done in collaboration with Jerry Mao and George Tang.
  
  ## Algorithms for fast selction on heap data structures.
  
