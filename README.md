@@ -2,6 +2,6 @@
  
  Done in collaboration with Jerry Mao and George Tang.
  
- ## Algorithms for fast selction on heap data structures.
+ ## Algorithms for fast selection on heap data structures.
  
  Paper avalible [here](paper.pdf).
