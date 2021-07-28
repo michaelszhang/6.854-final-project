@@ -4,4 +4,4 @@
  
  ## Algorithms for fast selection on heap data structures.
  
- Paper avalible [here](paper.pdf).
+ Paper available [here](paper.pdf).
